@@ -1,0 +1,61 @@
+
+<!--引入jquery和wangEditor.js-->   <!--注意：javascript必须放在body最后，否则可能会出现问题-->
+<script type="text/javascript" src="/static/js/wangEditor.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+
+        var editor = new wangEditor('editor');
+        //配置上传图片
+        editor.config.uploadImgUrl = '/uploadImg';
+        // 取消/开启粘贴过滤
+        editor.config.pasteFilter = true;
+        //只粘贴纯文本
+        editor.config.pasteText = true
+        editor.create();
+
+        //用文章内容初始化编辑器内容
+        editor.$txt.html('<%- article.art_content%>');
+        //用文章标题初始化标题input value
+        console.log('article.art_title','<%=article.art_title%>')
+        $('#title').val('<%=article.art_title%>')
+
+        $('#submit').click(function(){
+            //获取编辑器区域完整代码
+            var html = editor.$txt.html();
+            console.log('html',html);
+            //获取编辑器纯文本内容
+            // var text = editor.$txt.text();
+            // console.log('text',text);
+            // 获取格式化后的纯文本
+            // var formatText = editor.$txt.formatText();
+            // console.log('formatText',formatText);
+
+            //获取标题文本框的value
+            var inputValue = $('#title').val();
+
+            onSubmit(inputValue,html);
+        })
+
+        function onSubmit(title,content){
+            var formData = new FormData();
+            formData.append('art_content',content)
+            formData.append('art_title',title)
+            console.log('执行提交');
+            $.ajax({
+                url:'/articles/<%= article._id%>',
+                method:'PUT',
+                processData: false,
+                contentType: false,
+                data:formData,
+//                success:function(res){
+//                    alert(res.message)
+//                }
+                success:function(){
+                    alert('Article updated');
+                    history.back();
+                }
+            })
+        }
+
+    });
+</script>

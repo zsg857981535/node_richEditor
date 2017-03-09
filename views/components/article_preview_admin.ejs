@@ -1,0 +1,8 @@
+<div class = 'dg-article-preview admin-preview'>
+    <span class= 'article-title'><%=article.art_title%></span>
+    <span class = 'article-ctime'><%=article.art_createTime.toLocaleString()%></span>
+    <div>
+        <a class = 'edit_button' href="/admin/articles/<%=article._id%>">编辑</a>
+        <a class = 'delete_button' href = 'javascript:void(0)' onclick="onDelete('<%=article._id%>')">删除</a>
+    </div>
+</div>

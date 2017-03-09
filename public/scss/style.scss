@@ -1,0 +1,183 @@
+
+$bg-color:#E6E6E6;
+
+html,body{
+  margin:0;
+  padding:0;
+  background: $bg-color;
+}
+h1,h2,h3,h4,h5,p{
+  margin:0;
+  padding:0;
+}
+
+/*导航栏*/
+
+.dg-navbar{
+  width: 100%;
+  max-width: 800px;
+  padding: 0 20px;
+  height:80px;
+  margin:0 auto;
+  border-bottom: 1px solid #c0c0c0;
+  background: #FFF;
+  box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.3);
+
+  .admin-button,.home-button{
+    display: inline-block;
+    font-size: 18px;
+    text-decoration: none;
+    line-height: 80px;
+  }
+  .admin-button{
+    margin-left: 30px;
+  }
+
+
+}
+
+/*文章预览*/
+.dg-article-preview{
+  //width: 100%;
+  height: 50px;
+  margin:0 auto;
+  background: #FFF;
+  border-bottom: 1px solid #c0c0c0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  //padding: 0 20px;
+  cursor: pointer;
+  text-decoration: none;
+  color:#000;
+
+  .article-title{
+    font-size: 18px;
+    flex-basis: 30%;
+  }
+
+  .article-ctime{
+    font-size: 16px;
+  }
+
+  &:hover{
+      background: #ccc;
+      .article-title{
+        text-decoration: underline;
+      }
+  }
+}
+//后台文章预览
+
+.admin-preview{
+
+  cursor: auto;
+
+  .edit_button,.delete_button{
+      display: inline-block;
+      padding: 0 10px;
+      cursor: pointer;
+      color: #000;
+      text-decoration: none;
+
+      &:hover{
+        opacity: 0.8;
+      }
+  }
+  .edit_button{
+    color: #694ED3;
+  }
+  .delete_button{
+    color: #F03157;
+  }
+
+  &:hover{
+    background: #fff;
+
+    .article-title{
+      text-decoration: none;
+    }
+  }
+}
+
+/*文章预览列表容器*/
+.dg-article-preview-container{
+  width:100%;
+  max-width: 800px;
+  margin:10px auto 0;
+  padding:0 20px;
+  background: #fff;
+
+}
+
+/*文章详情*/
+.dg-article-content{
+  width:100%;
+  max-width: 800px;
+  background: #FFF;
+  margin:50px auto 0;
+  text-align: center;
+  padding:20px;
+  //box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.3);
+
+
+  .article-title{
+    padding: 10px 0;
+  }
+  .article-content{
+    text-align: left;
+    margin-top:30px;
+  }
+}
+
+/*添加文章*/
+.dg-add-article-container{
+  width:100%;
+  max-width: 800px;
+  margin: 10px auto 0;
+
+  .title-container{
+
+    p{
+     margin-bottom: 10px;
+    }
+
+    #title{
+        display: inline-block;
+        width: 50%;
+        height: 30px;
+        padding: 0 5px;
+        font-size: 16px;
+    }
+  }
+
+  #editor{
+    margin:0 auto;
+    height:500px;
+  }
+
+  .button_container{
+
+    margin-top: 20px;
+
+    .submit,.cancel{
+      padding:10px 30px;
+      cursor: pointer;
+      color:white;
+      border-radius: 3px;
+      text-decoration: none;
+
+      &:hover{
+
+        opacity: 0.8;
+      }
+    }
+
+    .submit{
+      background: #694ED3;
+    }
+    .cancel{
+      background: #F03157;
+    }
+  }
+}

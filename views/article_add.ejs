@@ -1,0 +1,16 @@
+<!--添加文章-->
+<%include components/header.ejs%>
+
+<div class = 'dg-add-article-container'>
+    <div class = 'title-container'>
+        <p><span>标题</span></p>
+        <p><input id = 'title' placeholder= '文章标题...'/></p>
+    </div>
+    <div id = 'editor'></div>
+    <div class = 'button_container'>
+        <a class = 'submit' id = 'submit'>提交</a>
+        <a class = 'cancel'>取消</a>
+    </div>
+</div>
+<% include components/editorScript.ejs%>
+<%include components/footer.ejs%>

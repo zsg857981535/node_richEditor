@@ -1,0 +1,12 @@
+<% include components/header.ejs%>
+<% include components/nav.ejs%>
+    <div class = 'dg-article-content'>
+        <div class="article-title">
+            <h3><%= article.art_title%></h3>
+            <h5><%= article.art_createTime.toLocaleString()%></h5>
+        </div>
+        <div class="article-content">
+            <%-article.art_content%>
+        </div>
+    </div>
+<% include components/footer.ejs%>

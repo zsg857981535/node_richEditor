@@ -1,0 +1,121 @@
+@charset "UTF-8";
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #E6E6E6; }
+
+h1, h2, h3, h4, h5, p {
+  margin: 0;
+  padding: 0; }
+
+/*导航栏*/
+.dg-navbar {
+  width: 100%;
+  max-width: 800px;
+  padding: 0 20px;
+  height: 80px;
+  margin: 0 auto;
+  border-bottom: 1px solid #c0c0c0;
+  background: #FFF;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3); }
+  .dg-navbar .admin-button, .dg-navbar .home-button {
+    display: inline-block;
+    font-size: 18px;
+    text-decoration: none;
+    line-height: 80px; }
+  .dg-navbar .admin-button {
+    margin-left: 30px; }
+
+/*文章预览*/
+.dg-article-preview {
+  height: 50px;
+  margin: 0 auto;
+  background: #FFF;
+  border-bottom: 1px solid #c0c0c0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  color: #000; }
+  .dg-article-preview .article-title {
+    font-size: 18px;
+    flex-basis: 30%; }
+  .dg-article-preview .article-ctime {
+    font-size: 16px; }
+  .dg-article-preview:hover {
+    background: #ccc; }
+    .dg-article-preview:hover .article-title {
+      text-decoration: underline; }
+
+.admin-preview {
+  cursor: auto; }
+  .admin-preview .edit_button, .admin-preview .delete_button {
+    display: inline-block;
+    padding: 0 10px;
+    cursor: pointer;
+    color: #000;
+    text-decoration: none; }
+    .admin-preview .edit_button:hover, .admin-preview .delete_button:hover {
+      opacity: 0.8; }
+  .admin-preview .edit_button {
+    color: #694ED3; }
+  .admin-preview .delete_button {
+    color: #F03157; }
+  .admin-preview:hover {
+    background: #fff; }
+    .admin-preview:hover .article-title {
+      text-decoration: none; }
+
+/*文章预览列表容器*/
+.dg-article-preview-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 10px auto 0;
+  padding: 0 20px;
+  background: #fff; }
+
+/*文章详情*/
+.dg-article-content {
+  width: 100%;
+  max-width: 800px;
+  background: #FFF;
+  margin: 50px auto 0;
+  text-align: center;
+  padding: 20px; }
+  .dg-article-content .article-title {
+    padding: 10px 0; }
+  .dg-article-content .article-content {
+    text-align: left;
+    margin-top: 30px; }
+
+/*添加文章*/
+.dg-add-article-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 10px auto 0; }
+  .dg-add-article-container .title-container p {
+    margin-bottom: 10px; }
+  .dg-add-article-container .title-container #title {
+    display: inline-block;
+    width: 50%;
+    height: 30px;
+    padding: 0 5px;
+    font-size: 16px; }
+  .dg-add-article-container #editor {
+    margin: 0 auto;
+    height: 500px; }
+  .dg-add-article-container .button_container {
+    margin-top: 20px; }
+    .dg-add-article-container .button_container .submit, .dg-add-article-container .button_container .cancel {
+      padding: 10px 30px;
+      cursor: pointer;
+      color: white;
+      border-radius: 3px;
+      text-decoration: none; }
+      .dg-add-article-container .button_container .submit:hover, .dg-add-article-container .button_container .cancel:hover {
+        opacity: 0.8; }
+    .dg-add-article-container .button_container .submit {
+      background: #694ED3; }
+    .dg-add-article-container .button_container .cancel {
+      background: #F03157; }

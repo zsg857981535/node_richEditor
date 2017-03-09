@@ -1,0 +1,10 @@
+<!--文章list-->
+<%- include components/header.ejs%>
+<% include components/nav.ejs%>
+<div class = 'dg-article-preview-container'>
+    <% articles.forEach(function(el){ %>
+        <% var article = el;%>
+        <%- include components/article_preview.ejs%>
+    <%});%>
+</div>
+<%- include components/footer.ejs%>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <!--引入wangEditor.css-->
+    <link rel="stylesheet" type="text/css" href="/static/css/wangEditor.min.css">
+
+
+
+  </head>
+  <body>
+       <div id = "editor">
+         <p>请输入内容...</p>
+       </div>
+       <button id = 'btn_sub'>获取内容</button>
+
+
+
+        <%-include components/editorScript.ejs%>
+        <%-include components/footer.ejs%>
