@@ -36,6 +36,8 @@ var path = require('path');
 var multer = require('multer');
 var Article = require('../models/article');
 var Model = Article.Model;
+var queryHelper = require('../models/query_helper');
+const pageQuery = queryHelper.pageQuery;
 
 //rename the uploaded file
 var storage = multer.diskStorage({
@@ -66,13 +68,32 @@ router.get('/',function(req,res,next){
 //Get all articles access http://localhost:3000
 router.get('/articles',function(req,res,next){
 
-     Article.findAll(function (err,articles) {
-        if(err){
-            next(err);
-        }
-        console.log('articles',articles);
-        res.render('articles',{articles:articles,title:'文章列表'});
-    });
+    //  Article.findAll(function (err,articles) {
+    //     if(err){
+    //         next(err);
+    //     }
+    //     console.log('articles',articles);
+    //     res.render('articles',{articles:articles,title:'文章列表'});
+    // });
+    //分页查询
+    var page = req.body.page || 1,
+        pageSize = 2,
+        populate = '',
+        queryParams = {},
+        sortParams = {art_createTime:'desc'};
+     pageQuery(page,pageSize,Model,populate,queryParams,sortParams,function(err,$page){
+         if(err){
+             next(err)
+         }
+         console.log('$page====',$page);
+         res.render('articles',{
+             articles:$page.results,//当前页的记录
+             pageCount:$page.pageCount,//多少页
+             pageNumber:$page.pageNumber,//当前第几页(从1开始)
+             count:$page.count,//总的记录数,
+             title:'文章列表'
+         })
+     })
 });
 
 //Get single article access http://localhost:3000/articles/:article_id

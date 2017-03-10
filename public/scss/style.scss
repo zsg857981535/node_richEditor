@@ -28,6 +28,7 @@ h1,h2,h3,h4,h5,p{
     font-size: 18px;
     text-decoration: none;
     line-height: 80px;
+    color:#000;
   }
   .admin-button{
     margin-left: 30px;
@@ -178,6 +179,25 @@ h1,h2,h3,h4,h5,p{
     }
     .cancel{
       background: #F03157;
+    }
+  }
+}
+/*添加文章按钮*/
+.dg-admin-add-button{
+  width:100%;
+  max-width: 800px;
+  padding:20px;
+  margin: 10px auto 0;
+
+  .add-button{
+    padding:15px 20px;
+    background: #3F60E2;
+    color:#fff;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+    &:hover{
+      opacity: 0.8;
     }
   }
 }

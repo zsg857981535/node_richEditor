@@ -21,13 +21,6 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-// app.use(sassMiddleWare({
-//   /*Options*/
-//   src:path.join(__dirname,'public/stylesheets'),
-//   dest:path.join(__dirname,'public/stylesheets/css'),
-//   debug:true,
-//   outputStyle:'compressed',
-// }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/static',express.static(path.join(__dirname,'dist')));
 

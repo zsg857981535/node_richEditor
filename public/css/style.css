@@ -22,7 +22,8 @@ h1, h2, h3, h4, h5, p {
     display: inline-block;
     font-size: 18px;
     text-decoration: none;
-    line-height: 80px; }
+    line-height: 80px;
+    color: #000; }
   .dg-navbar .admin-button {
     margin-left: 30px; }
 
@@ -119,3 +120,19 @@ h1, h2, h3, h4, h5, p {
       background: #694ED3; }
     .dg-add-article-container .button_container .cancel {
       background: #F03157; }
+
+/*添加文章按钮*/
+.dg-admin-add-button {
+  width: 100%;
+  max-width: 800px;
+  padding: 20px;
+  margin: 10px auto 0; }
+  .dg-admin-add-button .add-button {
+    padding: 15px 20px;
+    background: #3F60E2;
+    color: #fff;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none; }
+    .dg-admin-add-button .add-button:hover {
+      opacity: 0.8; }
