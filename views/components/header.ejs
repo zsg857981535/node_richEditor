@@ -6,25 +6,30 @@
     <!--引入wangEditor.css-->
     <link rel="stylesheet" type="text/css" href="/static/semantic-ui/semantic.css">
     <link rel="stylesheet" type="text/css" href="/static/wangEditor/css/wangEditor.min.css">
+    <link rel="stylesheet" type="text/css" href = "/static/pagination/simplePagination.css">
     <link rel='stylesheet' href='/css/style.css' />
     <script type="text/javascript" src="/static/wangEditor/js/lib/jquery-1.10.2.min.js"></script>
+    <!--分页插件-->
+    <script type="text/javascript" src="/static/pagination/jquery.simplePagination.js"></script>
     <script type="text/javascript" src="/static/semantic-ui/semantic.js"></script>
     <script type="text/javascript">
             //删除操作
             function onDelete(article_id){
                 //弹出确认框
-                window.confirm('确定删除该文章吗?')
-                $.ajax({
-                    url:'/articles/' + article_id,
-                    method:'DELETE',
-                    processData: false,
-                    contentType: false,
-                    success:function(res){
-                        alert(res.message);
-                        //重新加载当前页面
-                        location.reload();
-                    }
-                })
+                var r = window.confirm('确定删除该文章吗?')
+                if(r){
+                    $.ajax({
+                        url:'/api/articles/' + article_id,
+                        method:'DELETE',
+                        processData: false,
+                        contentType: false,
+                        success:function(res){
+                            alert(res.message);
+                            //重新加载当前页面
+                            location.reload();
+                        }
+                    })
+                }
             }
     </script>
 </head>

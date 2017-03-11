@@ -9,11 +9,11 @@
 /*
         API设计
         URL
-        /articles               GET         Read all articles
-        /articles               POST        Create an article
-        /articles/:article_id   GET         Read an single article
-        /articles/:article_id   PUT         Update an single article
-        /articles/:article_id   DELETE      Delete an single article
+        /api/articles               GET         Read all articles
+        /api/articles              POST        Create an article
+        /api/articles/:article_id   GET         Read an single article
+        /api/articles/:article_id   PUT         Update an single article
+        /api/articles/:article_id   DELETE      Delete an single article
 
         页面跳转设计
         Route                          view
@@ -76,7 +76,8 @@ router.get('/articles',function(req,res,next){
     //     res.render('articles',{articles:articles,title:'文章列表'});
     // });
     //分页查询
-    var page = req.body.page || 1,
+    console.log('page server===',req.query.page);
+    var page = req.query.page || 1,
         pageSize = 2,
         populate = '',
         queryParams = {},
@@ -119,13 +120,34 @@ router.get('/admin/article/add',function(req,res,next){
 //Read all articles at admin access http://localhost:3000/admin/articles
 router.get('/admin/articles',function(req,res,next){
 
-    Article.findAll(function (err,articles) {
+    // Article.findAll(function (err,articles) {
+    //     if(err){
+    //         next(err);
+    //     }
+    //     console.log('articles',articles);
+    //     res.render('admin_articles',{articles:articles,title:'文章管理'});
+    // });
+
+    //分页查询
+    console.log('page server===',req.query.page);
+    var page = req.query.page || 1,
+        pageSize = 2,
+        populate = '',
+        queryParams = {},
+        sortParams = {art_createTime:'desc'};
+    pageQuery(page,pageSize,Model,populate,queryParams,sortParams,function(err,$page){
         if(err){
-            next(err);
+            next(err)
         }
-        console.log('articles',articles);
-        res.render('admin_articles',{articles:articles,title:'文章管理'});
-    });
+        console.log('$page====',$page);
+        res.render('admin_articles',{
+            articles:$page.results,//当前页的记录
+            pageCount:$page.pageCount,//多少页
+            pageNumber:$page.pageNumber,//当前第几页(从1开始)
+            count:$page.count,//总的记录数,
+            title:'文章管理'
+        })
+    })
 });
 
 //Edit single article access http://localhost:3000/admin/articles/:article_id
@@ -145,8 +167,48 @@ router.get('/admin/articles/:article_id',function(req,res,next){
     });
 });
 
+
+//GET all article with pagination api
+
+router.get('/api/articles',function(req,res,next){
+    //分页查询
+    var page = req.body.page || 1,
+        pageSize = 2,
+        populate = '',//join 查询
+        queryParams = {},
+        sortParams = {art_createTime:'desc'};
+    pageQuery(page,pageSize,Model,populate,queryParams,sortParams,function(err,$page){
+        if(err){
+            next(err)
+        }
+        console.log('$page====',$page);
+        res.json({
+            articles:$page.results,//当前页的记录
+            pageCount:$page.pageCount,//多少页
+            pageNumber:$page.pageNumber,//当前第几页(从1开始)
+            count:$page.count,//总的记录数,
+        })
+    })
+});
+
+//GET an article detail api
+
+router.get('/api/articles/:article_id',function(req,res,next){
+    var id = req.params.article_id;
+    if(id == 'undefined'){
+        res.send('article not found');
+    }
+    Article.findById(id,function(err,article){
+        if(err){
+            next(err);
+        }
+        console.log('article',article);
+        res.json({article:article})
+    })
+});
+
 //POST an article api
-router.post('/articles',upload.array(),function(req,res,next){
+router.post('/api/articles',upload.array(),function(req,res,next){
     var article = new Model();
     article.art_content = req.body.art_content;
     article.art_title = req.body.art_title;
@@ -165,7 +227,7 @@ router.post('/articles',upload.array(),function(req,res,next){
 
 //DELETE an article api
 
-router.delete('/articles/:article_id',function (req,res,next) {
+router.delete('/api/articles/:article_id',function (req,res,next) {
     //todo check id
     var id = req.params.article_id;
     console.log('delete id',id)
@@ -180,7 +242,7 @@ router.delete('/articles/:article_id',function (req,res,next) {
 
 //PUT an article api
 
-router.put('/articles/:article_id',upload.array(),function(req,res,next){
+router.put('/api/articles/:article_id',upload.array(),function(req,res,next){
     //todo check id
 
     console.log('req.body.art_content,title',req.body.art_content,req.body.art_title)
@@ -201,7 +263,7 @@ router.put('/articles/:article_id',upload.array(),function(req,res,next){
 
 //POST upload img api
 
-router.post('/uploadImg',upload.array('wangEditorH5File'),function(req,res,next){
+router.post('/api/uploadImg',upload.array('wangEditorH5File'),function(req,res,next){
   console.log('req.files',req.files);
   res.send('/uploads/' + req.files[0].filename)
 });

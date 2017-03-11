@@ -13,6 +13,26 @@
         <%- include components/article_preview_admin.ejs%>
         <%});%>
     </div>
-
-
+<div id = 'pagination' class="pagination"></div>
+<script type="text/javascript">
+    $(function(){
+        /*
+         服务端返回值:
+         articles:$page.results,//当前页的记录
+         pageCount:$page.pageCount,//多少页
+         pageNumber:$page.pageNumber,//当前第几页(从1开始)
+         count:$page.count,//总的记录数,
+         */
+        $('#pagination').pagination({
+            pages:'<%= pageCount%>',//这里是服务端渲染的
+            onPageClick:function(pageNumber,event){//这里没有用异步刷新,因为拼接DOM太麻烦,直接用服务端渲染ejs模板
+                //event.preventDefault();
+                //这里是直接set href刷新地址栏
+                location.href = '/admin/articles?page=' + pageNumber;
+            },
+            cssStyle:'dark-theme',
+            currentPage:'<%= pageNumber%>'
+        })
+    })
+</script>
 <%include components/footer.ejs%>

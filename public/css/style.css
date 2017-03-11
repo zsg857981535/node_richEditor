@@ -72,6 +72,7 @@ h1, h2, h3, h4, h5, p {
 .dg-article-preview-container {
   width: 100%;
   max-width: 800px;
+  height: 600px;
   margin: 10px auto 0;
   padding: 0 20px;
   background: #fff; }
@@ -136,3 +137,11 @@ h1, h2, h3, h4, h5, p {
     text-decoration: none; }
     .dg-admin-add-button .add-button:hover {
       opacity: 0.8; }
+
+/*分页栏*/
+.pagination {
+  width: 100%;
+  max-width: 800px;
+  padding: 20px;
+  margin: 0 auto;
+  text-align: center; }
