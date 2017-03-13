@@ -8,7 +8,8 @@
 
 /*
         API设计
-        URL
+        URL                         method      description
+
         /api/articles               GET         Read all articles
         /api/articles              POST        Create an article
         /api/articles/:article_id   GET         Read an single article

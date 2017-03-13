@@ -40,4 +40,5 @@
 
 module.exports = function(app){
     app.use('/',require('./articles'));
+    app.use('/',require('./categories'));
 }

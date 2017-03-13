@@ -1,16 +1,37 @@
 
 $bg-color:#E6E6E6;
-
+$normal-button:#8069DA;
+$normal-button-hover:#5233CC;
+$normal-button-active:#D1C9F1;
 html,body{
   margin:0;
   padding:0;
   background: $bg-color;
 }
+
 h1,h2,h3,h4,h5,p{
   margin:0;
   padding:0;
 }
 
+/*normal-button*/
+
+.normal-button{
+    display: inline-block;
+    font-size: 18px;
+    text-decoration: none;
+    color:#FFF;
+    padding: 10px 20px;
+    background: $normal-button;
+    border-radius: 2px;
+  &:hover{
+    background:$normal-button-hover ;
+    color:#fff;
+  }
+  &:active{
+    background:$normal-button-active ;
+  }
+}
 /*导航栏*/
 
 .dg-navbar{
@@ -22,13 +43,24 @@ h1,h2,h3,h4,h5,p{
   border-bottom: 1px solid #c0c0c0;
   background: #FFF;
   box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction:row;
+  align-items: center;
 
   .admin-button,.home-button{
     display: inline-block;
     font-size: 18px;
     text-decoration: none;
-    line-height: 80px;
-    color:#000;
+    color:#FFF;
+    padding: 10px 20px;
+    background: $normal-button;
+    border-radius: 2px;
+    &:hover{
+      background:$normal-button-hover ;
+    }
+    &:active{
+      background:$normal-button-active ;
+    }
   }
   .admin-button{
     margin-left: 30px;
