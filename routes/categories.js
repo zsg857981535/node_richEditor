@@ -23,7 +23,7 @@
 
         /admin/categories               categories      Show all categories
         /admin/categories/:category_id  category_edit   Update a category
-        /admin/category/add             category_add    Create a category
+        /admin/category/add             category_add.ejs    Create a category
  */
 
 var express = require('express');

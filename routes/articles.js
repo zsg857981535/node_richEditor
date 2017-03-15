@@ -63,7 +63,8 @@ var upload = multer({ storage:storage })
 
 //Redirect articles
 router.get('/',function(req,res,next){
-    res.redirect('/articles')
+    // res.redirect('/
+    res.render('index',{title:'Blog | Home'});
 });
 
 //Get all articles access http://localhost:3000
