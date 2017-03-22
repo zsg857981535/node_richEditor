@@ -108,7 +108,8 @@ BRUSHED.nav = function(){
 BRUSHED.filter = function (){
 	if($('#projects').length > 0){		
 		var $container = $('#projects');
-		
+
+		//isotope 元素分类过滤和排序布局插件
 		$container.imagesLoaded(function() {
 			$container.isotope({
 			  // options

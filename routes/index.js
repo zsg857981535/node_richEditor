@@ -42,3 +42,19 @@ module.exports = function(app){
     app.use('/',require('./articles'));
     app.use('/',require('./categories'));
 }
+
+
+/*
+===============SPA页接口设计
+1.Slider 静态图片(可以手动添加)
+
+
+2.our work 博客添加预览图
+thumb 大图
+
+
+
+================END
+
+
+ */
