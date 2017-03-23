@@ -5,8 +5,10 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { browserHistory } from 'react-router'
 import configureStore from './store';
-import {App} from 'App';
+import createRoutes from './router';
+
 
 
 const store = configureStore();
@@ -17,7 +19,7 @@ console.log('store',store.getState())
 ReactDOM.render(
 
     <Provider store = {store}>
-        <App/>
+        {createRoutes(browserHistory)}
     </Provider>
     ,
     document.getElementById('root')

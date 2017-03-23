@@ -174,8 +174,8 @@ router.get('/admin/articles/:article_id',function(req,res,next){
 
 router.get('/api/articles',function(req,res,next){
     //分页查询
-    var page = req.body.page || 1,
-        pageSize = 2,
+    var page = req.query.page || 1,
+        pageSize = req.query.pageSize || 2,
         populate = '',//join 查询
         queryParams = {},
         sortParams = {art_createTime:'desc'};

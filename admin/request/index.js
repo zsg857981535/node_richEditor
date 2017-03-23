@@ -36,13 +36,14 @@ export default function request (options = {}){
                   headers.append('Authorization',token);
                   req = new Request(uri,{
                       method,
-                      headers
+                      headers,
+                      //mode:'no-cors',
                   });
               }else{
                   req = new Request(uri);
               }
 
-              return;
+              break;
           case 'POST' || 'PUT' || 'DELETE' :
 
               let formData = new FormData();
@@ -58,11 +59,15 @@ export default function request (options = {}){
               req = new Request(uri,{
                   method,
                   headers,
-                  mode:'cors',
+                 // mode:'no-cors',
                   body:formData
               });
 
               DEV && console.log(`${method}:${uri}:${JSON.stringify(params)}`);
+              break;
+          default:
+              return;
       }
+
     return fetch(req)
 }
