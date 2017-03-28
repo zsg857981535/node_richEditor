@@ -5,7 +5,15 @@ import React,{Component,PropTypes} from 'react';
 import { Layout,Menu,Breadcrumb,Icon} from 'antd';
 import { connect} from 'react-redux';
 import { bindActionCreators} from 'redux';
-import { article_module } from './redux'
+import {
+    BrowserRouter as Router,
+    Route,
+    Link
+} from 'react-router-dom';
+import ArticleList from './containers/ArticleList'
+
+
+import { article_module } from './redux';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -39,10 +47,12 @@ export class App extends Component{
         });
     };
     render(){
+        console.log('articles',this.props.articles);
         return (
-            <Layout style = {{ height:'100%'}}>
+             <Layout style = {{ height:'100%'}}>
                 <Header className="header">
                     <div className="logo" />
+                    {/*
                     <Menu
                         theme="dark"
                         mode="horizontal"
@@ -52,7 +62,7 @@ export class App extends Component{
                         <Menu.Item key="1">nav 1</Menu.Item>
                         <Menu.Item key="2">nav 2</Menu.Item>
                         <Menu.Item key="3">nav 3</Menu.Item>
-                    </Menu>
+                    </Menu>*/}
                 </Header>
                 <Layout>
                     <Sider width={200} style={{ background: '#fff' }}>
@@ -83,14 +93,18 @@ export class App extends Component{
                             </SubMenu>
                         </Menu>
                     </Sider>
+
                     <Layout style={{ padding: '0 24px 24px' }}>
-                        <Breadcrumb style={{ margin: '12px 0' }}>
+                        {/* <Breadcrumb style={{ margin: '12px 0' }}>
                             <Breadcrumb.Item>Home</Breadcrumb.Item>
                             <Breadcrumb.Item>List</Breadcrumb.Item>
                             <Breadcrumb.Item>App</Breadcrumb.Item>
-                        </Breadcrumb>
+                        </Breadcrumb>*/}
                         <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
-                            Content
+                            {/*
+                            <Route path = '/articles' render = {
+                                ()=>(<ArticleList articles = {this.props.articles}/>)
+                            }/>*/}
                         </Content>
                     </Layout>
                 </Layout>
@@ -100,8 +114,10 @@ export class App extends Component{
 }
 
 function mapStateToProps(state){
+    const articles = state.article_state.listOfPage[0];
+    console.log('state====',state);
     return {
-
+        articles
     }
 }
 
@@ -112,3 +128,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(App);
+
+
+
+
+

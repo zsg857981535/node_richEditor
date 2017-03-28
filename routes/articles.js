@@ -174,8 +174,8 @@ router.get('/admin/articles/:article_id',function(req,res,next){
 
 router.get('/api/articles',function(req,res,next){
     //分页查询
-    var page = req.query.page || 1,
-        pageSize = req.query.pageSize || 2,
+    var page = req.query.page && parseInt(req.query.page)|| 1,
+        pageSize = req.query.pageSize && parseInt(req.query.pageSize)|| 2,//这里queryString 传过来的是字符串,要转换为number
         populate = '',//join 查询
         queryParams = {},
         sortParams = {art_createTime:'desc'};

@@ -3,19 +3,20 @@
  */
 
 import React from 'react';
-import { Router} from 'react-router';
+import {
+    BrowserRouter as Router,
+    Route
+} from 'react-router-dom';
+
 import App from '../App';
 
 
-export const routerConfig = [
-    {
-        path:'/',
-        component: App
-    }
-];
 
-export default function (history){
+
+export default function (){
     return (
-        <Router history = {history} routers = {routerConfig}/>
+        <Router>
+            <Route path = "/" component={App}/>
+        </Router>
     )
 }

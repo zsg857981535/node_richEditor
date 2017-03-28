@@ -2,10 +2,9 @@
  * Created by DaGuo on 2017/3/22.
  */
 
-import { createStore as _createStore, applyMiddleware } from 'redux';
+import { createStore as _createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
-import {combineReducers} from 'redux';
 import {article_module} from '../redux';
 
 const { article_state } = article_module;
@@ -26,7 +25,7 @@ const finalCreateStore = applyMiddleware(
 // console.log(store.getState());
 
 
-export default function configureStore(initialState){
+export default function (initialState){
     const store = finalCreateStore(reducers,initialState);
 
     //Enable Webpack hot module replacement for reducers

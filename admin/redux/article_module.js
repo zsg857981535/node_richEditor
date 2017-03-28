@@ -1,8 +1,7 @@
 /**
  * Created by DaGuo on 2017/3/22.
  */
-import update from 'react-addons-update';
-import {makeActionCreator, createReducer} from './create_helper';
+import {makeActionCreator, createReducer,createHandlers} from './create_helper';
 import request from '../request';
 import {ARTICLE} from '../constant'
 
@@ -15,7 +14,7 @@ const UPDATE_ARTICLE = 'UPDATE_ARTICLE';
 const DELETE_ARTICLE = 'DELETE_ARTICLE';
 
 const controlAsync = makeActionCreator(CONTROL_READ_ARTICLES,'loading');
-const readArticles = makeActionCreator(READ_ARTICLES, 'pageNumber','articles','pageCount','count');
+const readArticles = makeActionCreator(READ_ARTICLES, 'pageNumber','list','pageCount','count');
 const createArticle = makeActionCreator(CREATE_ARTICLE);
 const updateArticle = makeActionCreator(UPDATE_ARTICLE);
 const deleteArticle = makeActionCreator(DELETE_ARTICLE);
@@ -56,7 +55,7 @@ export function handleReadArticles(page=1,pageSize=3) {
                     dispatch(controlAsync(false)); //async end
                 })
                 .catch(e=>{
-                    DEV && console.log('read Articles:',e.message);
+                    DEV && console.error('read Articles:',e.message);
                 })
         }
     }
@@ -82,7 +81,7 @@ export function handleCreateArticle(params){
                     DEV && console.log('create article:',json.message);
                 })
                 .catch(e=>{
-                    DEV && console.log('create article:',e.message);
+                    DEV && console.error('create article:',e.message);
                 })
         }
      }
@@ -104,7 +103,7 @@ export function handleUpdateArticle(article_id,params={}){
                 })
                 .catch(e=>{
 
-                    DEV && console.log('update article:',e.message);
+                    DEV && console.error('update article:',e.message);
                 })
         }
      }
@@ -126,7 +125,7 @@ export function handleDeleteArticle(article_id){
                 })
                 .catch(e=>{
 
-                    DEV && console.log('delete article:',e.message);
+                    DEV && console.error('delete article:',e.message);
                 })
         }
     }
@@ -145,40 +144,9 @@ const initialState = {
        }
      */
 };
-export const article_state = createReducer(initialState,{
-    [CONTROL_READ_ARTICLES]:(state,action)=>{
-        let loading = action.loading;
-        return {
-            ...state,
-            loading
-        }
-    },
-    [READ_ARTICLES]:(state,action)=>{
-        let {pageNumber,articles, pageCount,count} = action,
-            { listOfPage } = state,
-            newData = update(listOfPage,{$merge:{[pageNumber]:articles,pageCount,count,currentPage:pageNumber || 1}});
+export const article_state = createReducer(initialState,createHandlers('ARTICLE'));
 
-        return {
-            ...state,
-            listOfPage:newData
-        }
-    },
-    [CREATE_ARTICLE]:(state)=>{
-        return {
-            ...state
-        }
-    },
-    [UPDATE_ARTICLE]:(state)=>{
-        return{
-            ...state
-        }
-    },
-    [DELETE_ARTICLE]:(state)=>{
-        return {
-            ...state
-        }
-    }
-});
+
 
 
 
