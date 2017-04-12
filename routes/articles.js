@@ -65,6 +65,7 @@ var upload = multer({ storage:storage })
 router.get('/',function(req,res,next){
     // res.redirect('/
     res.render('index',{title:'Blog | Home'});
+    // res.render('facebook',{title:'facebook test'});
 });
 
 //Get all articles access http://localhost:3000
@@ -195,7 +196,7 @@ router.get('/api/articles',function(req,res,next){
 
 //GET an article detail api
 
-router.get('/api/articles/:article_id',function(req,res,next){
+router.get('/api/article/:article_id',function(req,res,next){
     var id = req.params.article_id;
     if(id == 'undefined'){
         res.send('article not found');
@@ -210,7 +211,7 @@ router.get('/api/articles/:article_id',function(req,res,next){
 });
 
 //POST an article api
-router.post('/api/articles',upload.array(),function(req,res,next){
+router.post('/api/article',upload.array(),function(req,res,next){
     var article = new Model();
     article.art_content = req.body.art_content;
     article.art_title = req.body.art_title;
@@ -229,7 +230,7 @@ router.post('/api/articles',upload.array(),function(req,res,next){
 
 //DELETE an article api
 
-router.delete('/api/articles/:article_id',function (req,res,next) {
+router.delete('/api/article/:article_id',function (req,res,next) {
     //todo check id
     var id = req.params.article_id;
     console.log('delete id',id)
@@ -244,7 +245,7 @@ router.delete('/api/articles/:article_id',function (req,res,next) {
 
 //PUT an article api
 
-router.put('/api/articles/:article_id',upload.array(),function(req,res,next){
+router.put('/api/article/:article_id',upload.array(),function(req,res,next){
     //todo check id
 
     console.log('req.body.art_content,title',req.body.art_content,req.body.art_title)
@@ -266,8 +267,9 @@ router.put('/api/articles/:article_id',upload.array(),function(req,res,next){
 //POST upload img api
 
 router.post('/api/uploadImg',upload.array('wangEditorH5File'),function(req,res,next){
+
   console.log('req.files',req.files);
-  res.send('/uploads/' + req.files[0].filename)
+  res.send('http://localhost:3000/uploads/' + req.files[0].filename)
 });
 
 module.exports = router;

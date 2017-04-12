@@ -40,7 +40,7 @@ var config = {
         path: path.resolve(__dirname, 'dist'), //string
 
         // the filename template for entry chunks (所有打包代码块的入口文件名)
-        filename: 'bundle.js',
+        filename: 'bundle.js?[hash]',
         /*
          filename: "[name].js", // for multiple entry points
          filename: "[chunkhash].js", // for long term caching
@@ -94,16 +94,25 @@ var config = {
 
             {
                 test: /\.(jpe?g|png|gif|svg)$/i,
-                loader: [
-                    //'url?limit=10000&name=img/[hash:8].[name].[ext]',
-                    'url?limit=10000&name=img/[name].[ext]',
-                    'image-webpack?{progressive:true, optimizationLevel: 7, interlaced: false, pngquant:{quality: "65-90", speed: 4}}'
-                ]
+                use: [{
+                    loader: 'url-loader',
+                    options: {
+                        limit: 1000,
+                        name: 'images/[name].ext'
+                    }
+                }]
             },
 
             {
                 test: /\.(eot|svg|ttf|woff|woff2|otf|ico)$/,
-                loader: 'file?name=fonts/[name].[ext]'
+                use: 'file-loader?name=fonts/[name].[ext]'
+            },
+            {
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                    fallback:'style-loader',
+                    use:['css-loader']
+                })
             },
 
             {
@@ -158,7 +167,7 @@ var config = {
         // }),
         new webpack.optimize.CommonsChunkPlugin({
             name:'vendor',
-            filename:'vendor.js'
+            filename:'vendor.js?[hash]'
         }),
         new webpack.DefinePlugin({
             'process.env':{

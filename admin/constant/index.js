@@ -5,4 +5,8 @@
 export  const HOST = 'http://localhost:3000/api';
 
 
-export const ARTICLE = '/articles';
+export const ARTICLE = {
+    articles:'/articles',
+    article: '/article',
+    uploadImg:'/uploadImg'
+};

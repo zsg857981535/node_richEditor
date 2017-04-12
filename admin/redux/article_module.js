@@ -23,17 +23,18 @@ const deleteArticle = makeActionCreator(DELETE_ARTICLE);
  *
  * @param page  第几页
  * @param pageSize 每页显示几条
+ * @param forced 强制刷新
  * @returns {function(*, *)}
  */
-export function handleReadArticles(page=1,pageSize=3) {
+export function handleReadArticles(page=1,pageSize=3,forced=false) {
     return (dispatch, getState) => {
         const listOfPage = getState().article_state;
 
         // listOfPage[page] is empty, so should read
-        if ( !listOfPage[page]) {
+        if ( !listOfPage[page] || forced) {
             dispatch(controlAsync(true));//async begin
             return request({
-                url: ARTICLE,
+                url: ARTICLE.articles,
                 method: 'GET',
                 params:{page,pageSize}
             })
@@ -71,7 +72,7 @@ export function handleCreateArticle(params){
 
         if(Object.keys(params).length){
             return request({
-                url:ARTICLE,
+                url:ARTICLE.article,
                 method:'POST',
                 params
             })
@@ -92,7 +93,7 @@ export function handleUpdateArticle(article_id,params={}){
         if(Object.keys(params).length){
 
             return request({
-                url:`${ARTICLE}/${article_id}`,
+                url:`${ARTICLE.article}/${article_id}`,
                 method:'PUT',
                 params
             })
@@ -111,12 +112,10 @@ export function handleUpdateArticle(article_id,params={}){
 
 export function handleDeleteArticle(article_id){
     return (dispatch)=>{
-        if(Object.keys(params).length){
-
+        if(article_id != 'undefined'){
             return request({
-                url:`${ARTICLE}/${article_id}`,
+                url:`${ARTICLE.article}/${article_id}`,
                 method:'DELETE',
-                params
             })
                 .then(res=>res.json())
                 .then(json=>{

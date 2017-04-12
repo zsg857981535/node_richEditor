@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node --harmony ./bin/www ",
+    "start": "node  ./bin/www ",
     "start:dev": "cross-env NODE_ENV=development node webpack.server.js",
     "webpack": "webpack -p --config webpack.config.js --progress --colors",
     "build": "cross-env NODE_ENV=production rimraf dist/ && npm run webpack"
@@ -16,6 +16,7 @@
     "debug": "~2.6.0",
     "ejs": "~2.5.5",
     "express": "~4.14.1",
+    "history": "^4.6.1",
     "isomorphic-fetch": "^2.2.1",
     "mongoose": "^4.8.6",
     "morgan": "~1.7.0",
