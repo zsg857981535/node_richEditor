@@ -11,18 +11,18 @@
         URL                         method           description
 
         /categories                  GET             GET all categories
-        /categories/:category_id     GET             GET an article by id
+        /category/:category_id       GET             GET an article by id
         /categories                  POST            CREATE  an category
-        /categories/:category_id     PUT             UPDATE an category
-        /categories/:category_id     DELETE          DELETE an category
+        /category/:category_id       PUT             UPDATE an category
+        /category/:category_id       DELETE          DELETE an category
 
 
         页面路由设计
 
-        Route                           view            description
+        Route                           view                description
 
-        /admin/categories               categories      Show all categories
-        /admin/categories/:category_id  category_edit   Update a category
+        /admin/categories               categories          Show all categories
+        /admin/category/:category_id    category_edit       Update a category
         /admin/category/add             category_add.ejs    Create a category
  */
 
@@ -35,7 +35,7 @@ var Model = Category.Model;
 
 
 // CREATE a category api
-router.post('/api/categories',function(req,res,next){
+router.post('/categories',function(req,res,next){
     var category = new Model();
     var name = req.body.cat_name;
     category.cat_name = name;
@@ -48,7 +48,7 @@ router.post('/api/categories',function(req,res,next){
 });
 
 // GET all categories api
-router.get('/api/categories',function(req,res,next){
+router.get('/categories',function(req,res,next){
     Category.findAll(function(err,categories){
         if(err){
             next(err);
@@ -58,7 +58,7 @@ router.get('/api/categories',function(req,res,next){
 });
 
 //UPDATE a category
-router.put('/api/categories/:category_id',function(req,res,next){
+router.put('/categories/:category_id',function(req,res,next){
     var name = req.body.name;
     var id = req.params.category_id;
     Category.updateById(id,name,function(err){
@@ -70,7 +70,7 @@ router.put('/api/categories/:category_id',function(req,res,next){
 });
 
 //DELETE a category
-router.delete('/api/categories/:category_id',function(req,res,next){
+router.delete('/categories/:category_id',function(req,res,next){
     var id = req.params.category_id;
     Category.removeById(id,function(err){
         if(err){

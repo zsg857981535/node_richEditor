@@ -2,7 +2,7 @@
  * Created by DaGuo on 2017/3/15.
  */
 import React, {Component, PropTypes} from 'react';
-import {Layout, Menu, Breadcrumb, Icon,message,Modal,Button} from 'antd';
+import {Layout, Menu, Breadcrumb, Icon,message,Modal,Button,Pagination } from 'antd';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {
@@ -15,7 +15,12 @@ import ArticleList from './containers/ArticleList'
 import EditArticle from './containers/EditArticle'
 
 import {article_module} from './redux';
-const {handleReadArticles,handleCreateArticle,handleUpdateArticle,handleDeleteArticle} = article_module;
+const {handleReadArticles,
+    handleCreateArticle,
+    handleUpdateArticle,
+    handleDeleteArticle,
+    getCurrentPage
+} = article_module;
 
 const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
@@ -60,14 +65,17 @@ export class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            theme: 'dark',
-            current: '1',
+            // theme: 'dark',
+            // current: '1',
             visible_del:false //删除文章对话框
         };
     }
 
     componentDidMount() {
-        this.props.readArticles();
+        this.props.readArticles()
+            .then(()=>{
+                this.props.getCurrentPage()
+            })
     }
 
     // changeTheme = (value) => {
@@ -138,11 +146,25 @@ export class App extends Component {
         this.setState({[key]:visible})
     }
 
+    handleOnPageChange=(page,pageSize)=>{
+        console.log('page pageSize',page,pageSize);
+        //判断有没有这一页的数据,有就不加载
+        const { listOfPage } = this.props
+        if(!listOfPage[page]){
+            this.props.readArticles(page,pageSize)
+                .then(()=>{
+                    this.props.getCurrentPage(page)
+                })
+        }else{
+            this.props.getCurrentPage(page)
+        }
+    };
+
     render() {
         // console.log('articles',this.props.articles);
 
 
-        const { articles } = this.props
+        const { articles,count,current} = this.props
         return (
             <Router>
                 <Layout style={{height: '100%'}}>
@@ -199,6 +221,14 @@ export class App extends Component {
                                                         this.handleModalVisible('visible_del',true)
                                                     }}
                                                 />
+                                                <Pagination
+                                                    total = {count}
+                                                    defaultPageSize = {10}
+                                                    style = {{width:300,margin:'0 auto',marginTop:'10px'}}
+                                                    defaultCurrent={1}
+                                                    current={current}
+                                                    onChange={this.handleOnPageChange}
+                                                />
                                                 <Modal
                                                     title = "删除文章"
                                                     visible={this.state.visible_del}
@@ -244,10 +274,14 @@ export class App extends Component {
 }
 
 function mapStateToProps(state) {
-    const articles = state.article_state.listOfPage['1'];
-    // console.log('state====',articles);
+    const { listOfPage,currentData,current } = state.article_state;
+    const { count } =  listOfPage;
+    // console.log('count currentPage',count,currentPage);
     return {
-        articles
+        articles:currentData,
+        count,
+        current,
+        listOfPage
     }
 }
 
@@ -256,7 +290,8 @@ function mapDispatchToProps(dispatch) {
         readArticles: handleReadArticles,
         createArticle:handleCreateArticle,
         updateArticle:handleUpdateArticle,
-        deleteArticle:handleDeleteArticle
+        deleteArticle:handleDeleteArticle,
+        getCurrentPage
     }, dispatch);
 }
 

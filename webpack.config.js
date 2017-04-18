@@ -159,7 +159,7 @@ var config = {
 
 
     plugins:[
-        new ExtractTextPlugin('style.css'),
+        new ExtractTextPlugin('style.css?[hash]'),
         // new HtmlWebpackPlugin({
         //     template: './index.html',
         //     inject: 'body',

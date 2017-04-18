@@ -32,7 +32,7 @@ export default function request (options = {}){
          DEV && console.log(`GET:${uri}`);
 
          if(token){
-             headers.append('Authorization',token);
+             headers.append('authorization',token);
              req = new Request(uri,{
                  method,
                  headers,
@@ -55,7 +55,7 @@ export default function request (options = {}){
              }
          }
          if(token){
-             headers.append('Authorization',token)
+             headers.append('authorization',token)
          }
          req = new Request(uri,{
              method,

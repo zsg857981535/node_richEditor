@@ -12,12 +12,14 @@ const READ_ARTICLES = 'READ_ARTICLES';
 const CREATE_ARTICLE = 'CREATE_ARTICLE';
 const UPDATE_ARTICLE = 'UPDATE_ARTICLE';
 const DELETE_ARTICLE = 'DELETE_ARTICLE';
+const GET_CURRENT = 'GET_CURRENT'
 
 const controlAsync = makeActionCreator(CONTROL_READ_ARTICLES,'loading');
 const readArticles = makeActionCreator(READ_ARTICLES, 'pageNumber','list','pageCount','count');
 const createArticle = makeActionCreator(CREATE_ARTICLE);
 const updateArticle = makeActionCreator(UPDATE_ARTICLE);
 const deleteArticle = makeActionCreator(DELETE_ARTICLE);
+const getCurrent = makeActionCreator(GET_CURRENT,'current','currentData')
 
 /**
  *
@@ -26,7 +28,7 @@ const deleteArticle = makeActionCreator(DELETE_ARTICLE);
  * @param forced 强制刷新
  * @returns {function(*, *)}
  */
-export function handleReadArticles(page=1,pageSize=3,forced=false) {
+export function handleReadArticles(page=1,pageSize=10,forced=false) {
     return (dispatch, getState) => {
         const listOfPage = getState().article_state;
 
@@ -127,6 +129,14 @@ export function handleDeleteArticle(article_id){
                     DEV && console.error('delete article:',e.message);
                 })
         }
+    }
+}
+/*当page 改变时获取当前页数据*/
+export function getCurrentPage(current=1){
+    return (dispatch,getState)=>{
+        let { listOfPage } = getState().article_state;
+        let currentData = listOfPage && listOfPage[current] || [];
+        dispatch(getCurrent(current,currentData))
     }
 }
 

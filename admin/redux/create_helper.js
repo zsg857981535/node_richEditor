@@ -76,6 +76,15 @@ export function createHandlers(entity) {
                 listOfPage: newData
             }
         },
+        ['GET_CURRENT']:(state,action)=>{
+            let { current,currentData } = action
+
+            return {
+                ...state,
+                current,
+                currentData
+            }
+        },
         [`CREATE_${entity}`]: (state) => {
             return {
                 ...state
