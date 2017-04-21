@@ -10,3 +10,8 @@ export const ARTICLE = {
     article: '/article',
     uploadImg:'/uploadImg'
 };
+
+export const CATEGORY = {
+    categories:'/categories',
+    category:'/category'
+};

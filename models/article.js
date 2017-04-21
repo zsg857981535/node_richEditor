@@ -26,11 +26,14 @@ var Schema = mongoose.Schema;
 var ArticleSchema = new Schema({
     art_createTime:{type:Date,default:Date.now()},//创建日期
     art_content:String,
-    art_title:String
-
+    art_title:String,
+    cat_id: {type: Schema.Types.ObjectId,ref:'Category'} //文章类别id
+    // cat_id: String
 });
 
 var Article = mongoose.model('Article',ArticleSchema);
+
+var Category = require('./category')
 
 module.exports = {
 
@@ -54,5 +57,21 @@ module.exports = {
         //没有什么好办法?需要一个个field更新
         return Article.update({_id:article._id},
             {$set:{art_content:article.art_content,art_title:article.art_title}},callback);
+    },
+    //通过cat_id 分组统计每个cat_id下面的文章数量
+    groupByCategory: function(callback){
+        return Article.aggregate(
+            [
+                // {$match:{cat_id:mongoose.Types.ObjectId(id)}}
+
+                {$group:{_id:'$cat_id',count:{$sum:1}}}
+            ],
+            function(err,result){
+                if(err){
+                    return callback(err,null)
+                }
+                callback(err,result)
+            }
+        )
     }
 };

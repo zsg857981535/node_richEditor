@@ -1,27 +1,25 @@
 /**
- * Created by DaGuo on 2017/3/15.
+ * Created by DaGuo on 2017/4/19.
  */
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import configureStore from './store';
-import createRouters from './router';
-import App from './App';
+import View from './View'
 
 
 const store = configureStore();
 
 
 console.log('store',store.getState())
-
-require('../lib/wangEditor/js/wangEditor.min')
-require('../lib/wangEditor/css/wangEditor.css')
+import 'override.less'
+import './View.scss'
 ReactDOM.render(
 
-      <Provider store = {store}>
-          <App/>
-      </Provider>
+    <Provider store = {store}>
+        <View/>
+    </Provider>
     ,
     document.getElementById('root')
 );

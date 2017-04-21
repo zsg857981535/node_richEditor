@@ -8,6 +8,7 @@ import React from 'react'
 import {Card, Button} from 'antd'
 import {Link} from 'react-router-dom'
 
+// admin ArticleList
 const ArticleList = (props) => {
     return props.articles ?
             <div className="articles-container">
@@ -27,7 +28,5 @@ const ArticleList = (props) => {
             </div>
         : <div>loading articles...</div>
 };
-
-export const Article = (props) => (<div dangerouslySetInnerHTML={{__html: props.article.art_content}}></div>);
 
 export default ArticleList;

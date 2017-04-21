@@ -22,6 +22,9 @@ module.exports = {
     findAll:function(callback){
         Category.find({}).exec(callback);
     },
+    findById:function(id,callback){
+        return Category.findOne({_id:id}).exec(callback);
+    },
     create:function(category,callback){
         category.save(category,callback);
     },
@@ -30,5 +33,5 @@ module.exports = {
     },
     updateById:function(id,name,callback){
         Category.update({_id:id},{$set:{cat_name:name}},callback);
-    }
+    },
 };

@@ -25,7 +25,7 @@
         // for FB.getLoginStatus().
         if (response.status === 'connected') {
             // Logged into your app and Facebook.
-            testAPI(response.authResponse.userID);
+            testAPI();
         } else {
             // The person is not logged into your app or we are unable to tell.
             document.getElementById('status').innerHTML = 'Please log ' +
@@ -81,13 +81,13 @@
 
     // Here we run a very simple test of the Graph API after login is
     // successful.  See statusChangeCallback() for when this call is made.
-    function testAPI(userId) {
+    function testAPI() {
         console.log('Welcome!  Fetching your information.... ');
         FB.api('/me',  {fields: 'last_name,email,picture'},function(response) {
             console.log("me api response",response);
-            console.log('Successful login for: ' + response.name);
+            console.log('Successful login for: ' + response.last_name);
             document.getElementById('status').innerHTML =
-                'Thanks for logging in, ' + response.name + '!';
+                'Thanks for logging in, ' + response.last_name + '!';
         });
 //        FB.api("/me/picture?width=180&height=180",  function(response) {
 //

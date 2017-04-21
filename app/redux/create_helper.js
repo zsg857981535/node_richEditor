@@ -24,7 +24,7 @@ export function makeActionCreator(type, ...argNames) {
  * @param handlers  object
  * @returns {Function}  reducer
  */
-export function createReducer(initialState = {
+export function  createReducer(initialState = {
     loading: false,
     listOfPage: {}
     /*

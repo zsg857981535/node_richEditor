@@ -11,8 +11,12 @@ import {
     Link,
     Switch
 } from 'react-router-dom';
-import ArticleList from './containers/ArticleList'
-import EditArticle from './containers/EditArticle'
+import {
+    ArticleList,
+    Article,
+    EditArticle,
+} from './containers'
+
 
 import {article_module} from './redux';
 const {handleReadArticles,
@@ -25,10 +29,10 @@ const {handleReadArticles,
 const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
 
+require( './override.less')
+require( './App.scss')
 
 
-import 'override.less'
-import 'App.scss'
 
 
 // const Crumbs = props=>(<Breadcrumb>
@@ -166,50 +170,50 @@ export class App extends Component {
 
         const { articles,count,current} = this.props
         return (
-            <Router>
-                <Layout style={{height: '100%'}}>
-                    <Header className="header">
-                        <div className="logo"/>
-                        {/*
-                         <Menu
-                         theme="dark"
-                         mode="horizontal"
-                         defaultSelectedKeys={['2']}
-                         style={{ lineHeight: '64px' }}
-                         >
-                         <Menu.Item key="1">nav 1</Menu.Item>
-                         <Menu.Item key="2">nav 2</Menu.Item>
-                         <Menu.Item key="3">nav 3</Menu.Item>
-                         </Menu>*/}
-                    </Header>
-                    <Layout>
-                        <Sider width={200} style={{background: '#fff'}}>
-                            <Menu
-                                mode="inline"
-                                theme="dark"
-                                defaultSelectedKeys={['1']}
-                                defaultOpenKeys={['sub1']}
-                                style={{height: '100%'}}
-                            >
-                                <SubMenu key="sub1" title={<span><Icon type="user"/>文章管理</span>}>
-                                    <Menu.Item key="1"><Link to="/">文章列表</Link></Menu.Item>
-                                </SubMenu>
-                            </Menu>
-                        </Sider>
+                <Router>
+                    <Layout style={{height: '100%'}}>
+                        <Header className="header">
+                            <div className="logo"/>
+                            {/*
+                             <Menu
+                             theme="dark"
+                             mode="horizontal"
+                             defaultSelectedKeys={['2']}
+                             style={{ lineHeight: '64px' }}
+                             >
+                             <Menu.Item key="1">nav 1</Menu.Item>
+                             <Menu.Item key="2">nav 2</Menu.Item>
+                             <Menu.Item key="3">nav 3</Menu.Item>
+                             </Menu>*/}
+                        </Header>
+                        <Layout>
+                            <Sider width={200} style={{background: '#fff'}}>
+                                <Menu
+                                    mode="inline"
+                                    theme="dark"
+                                    defaultSelectedKeys={['1']}
+                                    defaultOpenKeys={['sub1']}
+                                    style={{height: '100%'}}
+                                >
+                                    <SubMenu key="sub1" title={<span><Icon type="user"/>文章管理</span>}>
+                                        <Menu.Item key="1"><Link to="/admin">文章列表</Link></Menu.Item>
+                                    </SubMenu>
+                                </Menu>
+                            </Sider>
 
-                        <Layout style={{padding: '0 24px 24px'}}>
-                            {/* <Breadcrumb style={{ margin: '12px 0' }}>
-                             <Breadcrumb.Item>Home</Breadcrumb.Item>
-                             <Breadcrumb.Item>List</Breadcrumb.Item>
-                             <Breadcrumb.Item>App</Breadcrumb.Item>
-                             </Breadcrumb>*/}
-                            <Content style={{background: '#fff', padding: 24, margin: 0, minHeight: 280}}>
+                            <Layout style={{padding: '0 24px 24px'}}>
+                                {/* <Breadcrumb style={{ margin: '12px 0' }}>
+                                 <Breadcrumb.Item>Home</Breadcrumb.Item>
+                                 <Breadcrumb.Item>List</Breadcrumb.Item>
+                                 <Breadcrumb.Item>App</Breadcrumb.Item>
+                                 </Breadcrumb>*/}
+                                <Content style={{background: '#fff', padding: 24, margin: 0, minHeight: 280}}>
                                     <Route exact path="/" render={({ history}) => {
                                         return (
                                             <div>
                                                 <Button
                                                     type = "primary"
-                                                    onClick={()=>history.push('/add/article')}
+                                                    onClick={()=>history.push('/admin/add/article')}
                                                 >
                                                     新建文章
                                                 </Button>
@@ -241,34 +245,33 @@ export class App extends Component {
                                         )
                                     }}/>
                                     {/*
-                                    <Route path="/article/:art_id" render={({match, location, history}) => (
-                                        <Article article={history.location.state.article}/>)}/>*/}
+                                     <Route path="/article/:art_id" render={({match, location, history}) => (
+                                     <Article article={history.location.state.article}/>)}/>*/}
                                     <Route
                                         path = "/article/:art_id"
                                         name = "编辑文章"
                                         render = {({match,...rest})=>(<EditArticle
-                                                article = { articles &&
-                                                articles.find(el=>el._id == match.params.art_id)}
-                                                onSubmit = { (title,html)=>this.handleEditArticle(match.params.art_id,title,html) }
-                                                loading = { this.state.loading }
-                                                {...rest}
-                                                match = {match}
+                                            article = { articles &&
+                                            articles.find(el=>el._id == match.params.art_id)}
+                                            onSubmit = { (title,html)=>this.handleEditArticle(match.params.art_id,title,html) }
+                                            loading = { this.state.loading }
+                                            {...rest}
+                                            match = {match}
                                         />)}
                                     />
                                     <Route
                                         path = "/add/article"
                                         name = "新建文章"
                                         render = {props=><EditArticle
-                                                onSubmit={(title,html)=>this.handleAddArticle(title,html)}
-                                                loading = { this.state.loading }
+                                            onSubmit={(title,html)=>this.handleAddArticle(title,html)}
+                                            loading = { this.state.loading }
                                         />}
                                     />
-
-                            </Content>
+                                </Content>
+                            </Layout>
                         </Layout>
                     </Layout>
-                </Layout>
-            </Router>
+                </Router>
         )
     }
 }

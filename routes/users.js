@@ -21,7 +21,7 @@ var User = require('../models/user')
 var Model = User.Model
 var jwt = require('jsonwebtoken')
 var multer = require('multer') // parse formData
-var verifyToken = require('./common').verifyToken
+
 
 var storage = multer.diskStorage({
     destination:function(req,file,cb){

@@ -29,7 +29,7 @@ var pageQuery = function(page,pageSize,Model,populate,queryParams,sortParams,cal
         //总的记录数
         count:function(done){
             Model.find().count(queryParams).exec(function(err,count){
-                console.log( "Number of users:", count );
+                // console.log( "Number of users:", count );
                 done(err,count);
             })
         },

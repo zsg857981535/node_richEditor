@@ -9,10 +9,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 var pkg = require('./package.json');
 
 var DEV = process.env.NODE_ENV == 'development';
-//
-// var env = {
-//     NODE_ENV:process.env.NODE_ENV
-// };
+var isAdmin = true
+
 var config = {
 
     // Here the application starts executing(执行)
@@ -20,7 +18,7 @@ var config = {
 
 
     entry:{
-        app: ['./admin/index.js'],
+        app:isAdmin ? [ './app/index.js'] : ['./app/index_view.js'],
         vendor:[
             'react',
             'react-dom',
@@ -37,7 +35,7 @@ var config = {
 
         // the target directory for all outputs files
         //must be an absolute path (use the Node.js module)
-        path: path.resolve(__dirname, 'dist'), //string
+        path: path.resolve(__dirname, isAdmin ? 'admin_dist' : 'view_dist'), //string
 
         // the filename template for entry chunks (所有打包代码块的入口文件名)
         filename: 'bundle.js?[hash]',
@@ -72,7 +70,7 @@ var config = {
             {
                 test:/\.js|jsx?$/,
                 include:[
-                    path.resolve(__dirname,"admin")
+                    path.resolve(__dirname,"app")
                 ],
                 exclude:[
                     path.resolve(__dirname,'node_modules')
@@ -98,7 +96,7 @@ var config = {
                     loader: 'url-loader',
                     options: {
                         limit: 1000,
-                        name: 'images/[name].ext'
+                        name: 'images/[name].[ext]'
                     }
                 }]
             },
@@ -129,6 +127,10 @@ var config = {
                     use:['css-loader','less-loader']
                 })
             },
+            {
+                test:/\.json$/,
+                use:'json-loader'
+            }
         ]
     },
 
@@ -138,7 +140,7 @@ var config = {
 
         modules:[
             "node_modules",
-            path.resolve(__dirname,"admin")
+            path.resolve(__dirname,"app")
         ],
         extensions: ['.js','.scss', '.css','.jsx','.json']
     },
@@ -183,7 +185,6 @@ if(DEV){
         'webpack-dev-server/client?http://localhost:3001',
         'webpack/hot/only-dev-server'
     );
-
     config.plugins = config.plugins.concat([
         new webpack.HotModuleReplacementPlugin(),
         new OpenBrowserPlugin({ url: 'http://localhost:3001' })

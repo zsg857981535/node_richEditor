@@ -38,7 +38,8 @@ var multer = require('multer');
 var Article = require('../models/article');
 var Model = Article.Model;
 var queryHelper = require('../models/query_helper');
-const pageQuery = queryHelper.pageQuery;
+var pageQuery = queryHelper.pageQuery;
+var mongoose = require('mongoose');
 
 //rename the uploaded file
 var storage = multer.diskStorage({
@@ -177,9 +178,12 @@ router.get('/articles', function (req, res, next) {
     //分页查询
     var page = req.query.page && parseInt(req.query.page) || 1,
         pageSize = req.query.pageSize && parseInt(req.query.pageSize) || 2,//这里queryString 传过来的是字符串,要转换为number
-        populate = '',//join 查询
-        queryParams = {},
+        populate = 'cat_id',//join 查询
+        cat_id = req.query.cat_id,//
+        queryParams = cat_id ? {cat_id:mongoose.Types.ObjectId(cat_id)} : {},
         sortParams = {art_createTime: 'desc'};
+
+    console.log('cat_id',req.query.cat_id);
     pageQuery(page, pageSize, Model, populate, queryParams, sortParams, function (err, $page) {
         if (err) {
             next(err)
@@ -191,6 +195,17 @@ router.get('/articles', function (req, res, next) {
             pageNumber: $page.pageNumber,//当前第几页(从1开始)
             count: $page.count,//总的记录数,
         })
+    })
+});
+
+//GET articles group by cat_id
+router.get('/articles/group',function(req,res,next){
+    Article.groupByCategory(function(err,result){
+        // if(err){
+        //     next(err)
+        // }
+        console.log('group by',result);
+        res.send(result)
     })
 });
 
@@ -210,13 +225,17 @@ router.get('/article/:article_id', function (req, res, next) {
     })
 });
 
+
+
+
 //POST an article api
 router.post('/article', upload.array(), function (req, res, next) {
 
     var title = req.body.art_title,
-        content = req.body.art_content;
+        content = req.body.art_content,
+        cat_id = req.body.cat_id
 
-    console.log('art_content,art_title', content, title);
+    console.log('art_content,art_title', content, title,cat_id);
 
     if (!title || !content) {
         res.send({
@@ -229,15 +248,16 @@ router.post('/article', upload.array(), function (req, res, next) {
     var article = new Model();
     article.art_content = content;
     article.art_title = title;
+    article.cat_id = cat_id ? mongoose.Types.ObjectId(cat_id) : '';
 
     //todo check content
     Article.create(article, function (err) {
         //todo friendly handle error
         if (err) {
-            res.send({status: true, message: 'Create failure'});
+            res.send({status: false, message: 'Create failure'});
             next(err);
         }
-        res.send({status: false, message: 'Article created'})
+        res.send({status: true, message: 'Article created'})
         //return res.redirect('/admin/articles')
     });
 });

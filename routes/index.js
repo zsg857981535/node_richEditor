@@ -43,6 +43,7 @@ module.exports = function(app){
     app.use('/api',require('./users'));
     app.use('/api',require('./articles'));
     app.use('/api',require('./categories'));
+    app.use('/',require('./frontend'))
 }
 
 

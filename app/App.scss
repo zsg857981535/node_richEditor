@@ -1,5 +1,17 @@
 
+/*
+  =======
+  colors
+  =======
+ */
 
+
+
+
+
+
+
+//flex list
 @mixin flexGrid($columnNumber,$spacingPercent){
   $contentPercent: 100% - $spacingPercent;
   /*if first column and last column no margin left or margin right
@@ -21,9 +33,9 @@
   }
 }
 #root{
-  width:100%;
-  height: 100%;
-}
+   width:100%;
+   height: 100%;
+ }
 .app_container{
   font-size: 16px;
   //color:red;
@@ -59,3 +71,4 @@
 .editor-container{
   height:500px;
 }
+

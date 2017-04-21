@@ -17,3 +17,5 @@ tree.txt
 .idea
 build/
 www/
+admin_dist/
+view_dist/
