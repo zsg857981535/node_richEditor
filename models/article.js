@@ -27,13 +27,14 @@ var ArticleSchema = new Schema({
     art_createTime:{type:Date,default:Date.now()},//创建日期
     art_content:String,
     art_title:String,
-    cat_id: {type: Schema.Types.ObjectId,ref:'Category'} //文章类别id
+    art_img:String,//题图url
+    cat_id: {type: Schema.Types.ObjectId,ref:'Category',default:null} //文章类别id
     // cat_id: String
 });
 
 var Article = mongoose.model('Article',ArticleSchema);
 
-var Category = require('./category')
+var Category = require('./category').Model
 
 module.exports = {
 
@@ -56,7 +57,12 @@ module.exports = {
     updateByInstance:function(article,callback){
         //没有什么好办法?需要一个个field更新
         return Article.update({_id:article._id},
-            {$set:{art_content:article.art_content,art_title:article.art_title}},callback);
+            {$set:{
+                art_content:article.art_content,
+                art_title:article.art_title,
+                art_img:article.art_img,
+                cat_id:article.cat_id
+        }},callback);
     },
     //通过cat_id 分组统计每个cat_id下面的文章数量
     groupByCategory: function(callback){
@@ -70,7 +76,7 @@ module.exports = {
                 if(err){
                     return callback(err,null)
                 }
-                callback(err,result)
+                Category.populate(result,{path:'_id'},callback)
             }
         )
     }

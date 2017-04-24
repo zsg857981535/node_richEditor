@@ -180,10 +180,10 @@ router.get('/articles', function (req, res, next) {
         pageSize = req.query.pageSize && parseInt(req.query.pageSize) || 2,//这里queryString 传过来的是字符串,要转换为number
         populate = 'cat_id',//join 查询
         cat_id = req.query.cat_id,//
-        queryParams = cat_id ? {cat_id:mongoose.Types.ObjectId(cat_id)} : {},
+        queryParams = cat_id ? {cat_id:mongoose.Types.ObjectId(cat_id)} : {},//按照文章类别查询
         sortParams = {art_createTime: 'desc'};
 
-    console.log('cat_id',req.query.cat_id);
+    // console.log('cat_id',req.query.cat_id);
     pageQuery(page, pageSize, Model, populate, queryParams, sortParams, function (err, $page) {
         if (err) {
             next(err)
@@ -201,11 +201,19 @@ router.get('/articles', function (req, res, next) {
 //GET articles group by cat_id
 router.get('/articles/group',function(req,res,next){
     Article.groupByCategory(function(err,result){
-        // if(err){
-        //     next(err)
-        // }
-        console.log('group by',result);
-        res.send(result)
+        if(err){
+            next(err)
+        }
+        // console.log('group by',result);
+        var newResult = result.map(function (el) {
+            var item = {};
+            item._id = el._id._id;
+            item.cat_name = el._id.cat_name
+            item.count = el.count;
+            return item;
+        })
+        // console.log('newResult',newResult);
+        res.send({data:newResult})
     })
 });
 
@@ -233,22 +241,23 @@ router.post('/article', upload.array(), function (req, res, next) {
 
     var title = req.body.art_title,
         content = req.body.art_content,
-        cat_id = req.body.cat_id
+        cat_id = req.body.cat_id,
+        img = req.body.art_img;//题图url
 
-    console.log('art_content,art_title', content, title,cat_id);
+    console.log('art_content,art_title', content, title,cat_id,img);
 
-    if (!title || !content) {
+    if (!title || !content || !img) {
         res.send({
             status: false,
             message: 'Title and content is required'
         })
         return
     }
-
     var article = new Model();
     article.art_content = content;
     article.art_title = title;
-    article.cat_id = cat_id ? mongoose.Types.ObjectId(cat_id) : '';
+    article.art_img = img;
+    article.cat_id = cat_id != undefined ? mongoose.Types.ObjectId(cat_id) : null;// 比较undefined 不能就加引号,undefined是对象
 
     //todo check content
     Article.create(article, function (err) {
@@ -256,6 +265,7 @@ router.post('/article', upload.array(), function (req, res, next) {
         if (err) {
             res.send({status: false, message: 'Create failure'});
             next(err);
+            return;
         }
         res.send({status: true, message: 'Article created'})
         //return res.redirect('/admin/articles')
@@ -292,8 +302,10 @@ router.put('/article/:article_id', upload.array(), function (req, res, next) {
 
     var id = req.params.article_id,
         content = req.body.art_content,
-        title = req.body.art_title;
-    console.log('req.body.art_content,title', content, title)
+        title = req.body.art_title,
+        img = req.body.art_img,
+        cat_id = req.body.cat_id;
+    console.log('req.body.art_content,title,img', content, title,img)
     Article.findById(id, function (err, article) {
         if (err) {
             next(err)
@@ -305,28 +317,39 @@ router.put('/article/:article_id', upload.array(), function (req, res, next) {
             })
             return
         } else {
-            if (title) {
+            if (title != undefined) {
                 article.art_title = title
             }
-            if (content) {
+            if (content != undefined) {
                 article.art_content = content
+            }
+            if(img != undefined){
+                article.art_img = img
+            }
+            if(cat_id != undefined){
+                article.cat_id = cat_id
             }
         }
         Article.updateByInstance(article, function (err) {
             if (err) {
                 res.send({status: false, message: 'Updated failure'});
-                next(err);
+                next(err)
+                return
             }
             res.send({status: true, message: 'Updated successfully'});
         })
     })
 });
+//上传文章题图
+router.post('/upload',upload.array('art_img'),function(req,res,next){
+    // console.log('upload art_img:',req.files[0]);
+    res.send({imgUrl:'http://localhost:3000/uploads/' + req.files[0].filename});
+});
 
-//POST upload img api
 
+// 编辑器上传图片
 router.post('/uploadImg', upload.array('wangEditorH5File'), function (req, res, next) {
-
-    console.log('req.files', req.files);
+    // console.log('req.files', req.files);
     res.send('http://localhost:3000/uploads/' + req.files[0].filename)
 });
 

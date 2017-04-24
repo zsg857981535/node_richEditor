@@ -5,12 +5,14 @@
 import { createStore as _createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
-import {article_module} from '../redux';
+import {article_module,category_module} from '../redux';
 
 const { article_state } = article_module;
+const { category_state } = category_module
 
 const reducers = combineReducers({
-    article_state
+    article_state,
+    category_state
 });
 
 const middlewares = [ thunk ];

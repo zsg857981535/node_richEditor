@@ -62,7 +62,7 @@ router.get('/categories',function(req,res,next){
         if(err){
             next(err);
         }
-        res.json({categories:categories});
+        res.json({data:categories});
     })
 });
 

@@ -13,18 +13,26 @@ import {
 } from 'react-router-dom';
 import {
     ArticleList,
-    Article,
     EditArticle,
+    Category
 } from './containers'
 
 
-import {article_module} from './redux';
-const {handleReadArticles,
+import {article_module,category_module} from './redux';
+const {
+    handleReadArticles,
     handleCreateArticle,
     handleUpdateArticle,
     handleDeleteArticle,
     getCurrentPage
 } = article_module;
+
+const {
+    handleReadCategories,
+    handleCreateCategory,
+    handleDeleteCategory
+
+} = category_module
 
 const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
@@ -94,15 +102,15 @@ export class App extends Component {
     //     });
     // };
 
-    handleEditArticle(id,title,html){
-        console.log('submit',id,title,html);
+    handleEditArticle(id,imgUrl,title,html){
+        console.log('submit',id,imgUrl,title,html);
         if(this.state.loading){
             return;
         }
         this.setState({
            loading:true
         });
-        this.props.updateArticle(id,{art_content:html,art_title:title})
+        this.props.updateArticle(id,{art_img:imgUrl,art_content:html,art_title:title})
             .then(()=>{
                 this.setState({
                     loading:false
@@ -114,7 +122,7 @@ export class App extends Component {
             })
     }
 
-    handleAddArticle(title,html){
+    handleAddArticle(imgUrl,title,html){
         console.log('add article',title,html);
 
         if(this.state.loading){
@@ -123,7 +131,7 @@ export class App extends Component {
         this.setState({
             loading:true
         });
-        this.props.createArticle({art_title:title,art_content:html})
+        this.props.createArticle({art_img:imgUrl,art_title:title,art_content:html})
             .then(()=>{
                 this.setState({
                     loading:false
@@ -168,7 +176,16 @@ export class App extends Component {
         // console.log('articles',this.props.articles);
 
 
-        const { articles,count,current} = this.props
+        const {
+            articles,
+            count,
+            current,
+            readCategories,
+            createCategory,
+            deleteCategory,
+            categories
+
+        } = this.props
         return (
                 <Router>
                     <Layout style={{height: '100%'}}>
@@ -196,7 +213,9 @@ export class App extends Component {
                                     style={{height: '100%'}}
                                 >
                                     <SubMenu key="sub1" title={<span><Icon type="user"/>文章管理</span>}>
-                                        <Menu.Item key="1"><Link to="/admin">文章列表</Link></Menu.Item>
+                                        <Menu.Item key="1"><Link to="/">文章列表</Link></Menu.Item>
+                                        <Menu.Item key="2"><Link to="/categories">类别列表</Link></Menu.Item>
+
                                     </SubMenu>
                                 </Menu>
                             </Sider>
@@ -213,7 +232,7 @@ export class App extends Component {
                                             <div>
                                                 <Button
                                                     type = "primary"
-                                                    onClick={()=>history.push('/admin/add/article')}
+                                                    onClick={()=>history.push('/add/article')}
                                                 >
                                                     新建文章
                                                 </Button>
@@ -253,7 +272,7 @@ export class App extends Component {
                                         render = {({match,...rest})=>(<EditArticle
                                             article = { articles &&
                                             articles.find(el=>el._id == match.params.art_id)}
-                                            onSubmit = { (title,html)=>this.handleEditArticle(match.params.art_id,title,html) }
+                                            onSubmit = { (imgUrl,title,html)=>this.handleEditArticle(match.params.art_id,imgUrl,title,html) }
                                             loading = { this.state.loading }
                                             {...rest}
                                             match = {match}
@@ -263,8 +282,19 @@ export class App extends Component {
                                         path = "/add/article"
                                         name = "新建文章"
                                         render = {props=><EditArticle
-                                            onSubmit={(title,html)=>this.handleAddArticle(title,html)}
+                                            onSubmit={(imgUrl,title,html)=>this.handleAddArticle(imgUrl,title,html)}
                                             loading = { this.state.loading }
+                                        />}
+                                    />
+                                    <Route
+                                        path = "/categories"
+                                        name = "类别列表"
+                                        render={props=><Category
+                                            fetchData={ readCategories}
+                                            tags={ categories }
+                                            onRemoveTag={ deleteCategory }
+                                            onAddTag= { createCategory }
+
                                         />}
                                     />
                                 </Content>
@@ -280,11 +310,14 @@ function mapStateToProps(state) {
     const { listOfPage,currentData,current } = state.article_state;
     const { count } =  listOfPage;
     // console.log('count currentPage',count,currentPage);
+    const { category_state } = state
+    const { categories} = category_state
     return {
         articles:currentData,
         count,
         current,
-        listOfPage
+        listOfPage,
+        categories
     }
 }
 
@@ -294,7 +327,11 @@ function mapDispatchToProps(dispatch) {
         createArticle:handleCreateArticle,
         updateArticle:handleUpdateArticle,
         deleteArticle:handleDeleteArticle,
-        getCurrentPage
+        getCurrentPage,
+
+        readCategories:handleReadCategories,
+        createCategory:handleCreateCategory,
+        deleteCategory:handleDeleteCategory
     }, dispatch);
 }
 
