@@ -1,7 +1,8 @@
 /**
  * Created by DaGuo on 2017/3/22.
  */
-import {makeActionCreator, createReducer,createHandlers} from './create_helper';
+import update from 'react-addons-update';
+import {makeActionCreator, createReducer} from './create_helper';
 import request from '../request';
 import {ARTICLE} from '../constant'
 
@@ -12,23 +13,26 @@ const READ_ARTICLES = 'READ_ARTICLES';
 const CREATE_ARTICLE = 'CREATE_ARTICLE';
 const UPDATE_ARTICLE = 'UPDATE_ARTICLE';
 const DELETE_ARTICLE = 'DELETE_ARTICLE';
-const GET_CURRENT = 'GET_CURRENT'
+const GET_CURRENT = 'GET_CURRENT_PAGE'
+const READ_ARTICLES_GROUP = 'READ_ARTICLES_GROUP'//分组统计类别下的文章
 
 const controlAsync = makeActionCreator(CONTROL_READ_ARTICLES,'loading');
 const readArticles = makeActionCreator(READ_ARTICLES, 'pageNumber','list','pageCount','count');
 const createArticle = makeActionCreator(CREATE_ARTICLE);
 const updateArticle = makeActionCreator(UPDATE_ARTICLE);
 const deleteArticle = makeActionCreator(DELETE_ARTICLE);
-const getCurrent = makeActionCreator(GET_CURRENT,'current','currentData')
+const getCurrent = makeActionCreator(GET_CURRENT,'currentPage','currentData')
+const readArticlesGroup = makeActionCreator(READ_ARTICLES_GROUP,'groupData')
 
 /**
  *
  * @param page  第几页
  * @param pageSize 每页显示几条
+ * @param cat_id 类别id
  * @param forced 强制刷新
  * @returns {function(*, *)}
  */
-export function handleReadArticles(page=1,pageSize=10,forced=false) {
+export function handleReadArticles(page=1,pageSize=10,cat_id='',forced=false) {
     return (dispatch, getState) => {
         const listOfPage = getState().article_state;
 
@@ -38,7 +42,7 @@ export function handleReadArticles(page=1,pageSize=10,forced=false) {
             return request({
                 url: ARTICLE.articles,
                 method: 'GET',
-                params:{page,pageSize}
+                params:{page,pageSize,cat_id}
             })
                 .then(res => res.json())
                 .then(json=>{
@@ -61,6 +65,23 @@ export function handleReadArticles(page=1,pageSize=10,forced=false) {
                     DEV && console.error('read Articles:',e.message);
                 })
         }
+    }
+}
+export function handleReadGroup(){
+    return (dispatch)=>{
+        return request({
+            url:ARTICLE.articlesGroup,
+            method: 'GET'
+        })
+            .then(res=>res.json())
+            .then(json=>{
+                const { data } = json
+                DEV && console.log('read articles group',json);
+                dispatch(readArticlesGroup(data))
+            })
+            .catch(e=>{
+                DEV && console.error('read articles group',e.message)
+            })
     }
 }
 
@@ -132,11 +153,11 @@ export function handleDeleteArticle(article_id){
     }
 }
 /*当page 改变时获取当前页数据*/
-export function getCurrentPage(current=1){
+export function getCurrentPage(currentPage=1){
     return (dispatch,getState)=>{
         let { listOfPage } = getState().article_state;
-        let currentData = listOfPage && listOfPage[current] || [];
-        dispatch(getCurrent(current,currentData))
+        let currentData = listOfPage && listOfPage[currentPage] || [];
+        dispatch(getCurrent(currentPage,currentData))
     }
 }
 
@@ -145,7 +166,10 @@ export function getCurrentPage(current=1){
 //reducer
 const initialState = {
     loading:false,
-    listOfPage:{}
+    listOfPage:{},
+    currentPage:1,
+    currentData:[],
+    groupData:[] //按类别分组
     /*
        listOfPage:{
             pageNumber:list,//当页记录数
@@ -155,7 +179,63 @@ const initialState = {
        }
      */
 };
-export const article_state = createReducer(initialState,createHandlers('ARTICLE'));
+export const article_state = createReducer(initialState,{
+    [CONTROL_READ_ARTICLES]: (state, action) => {
+        let loading = action.loading;
+        return {
+            ...state,
+            loading
+        }
+    },
+    [READ_ARTICLES]: (state, action) => {
+        let {pageNumber, list, pageCount, count} = action,
+            {listOfPage} = state,
+            newData = update(listOfPage, {
+                $merge: {
+                    [pageNumber]: list,
+                    pageCount,
+                    count,
+                    currentPage: pageNumber || 1
+                }
+            });
+
+        return {
+            ...state,
+            listOfPage: newData
+        }
+    },
+    [READ_ARTICLES_GROUP]:(state,action)=>{
+        let { groupData } = action
+        return {
+            ...state,
+            groupData
+        }
+    },
+    [GET_CURRENT]:(state,action)=>{
+        let { currentPage,currentData } = action
+
+        return {
+            ...state,
+            currentPage,
+            currentData
+        }
+    },
+    [CREATE_ARTICLE]: (state) => {
+        return {
+            ...state
+        }
+    },
+    [UPDATE_ARTICLE]: (state) => {
+        return {
+            ...state
+        }
+    },
+    [DELETE_ARTICLE]: (state) => {
+        return {
+            ...state
+        }
+    }
+});
 
 
 

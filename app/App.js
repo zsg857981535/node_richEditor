@@ -2,7 +2,7 @@
  * Created by DaGuo on 2017/3/15.
  */
 import React, {Component, PropTypes} from 'react';
-import {Layout, Menu, Breadcrumb, Icon,message,Modal,Button,Pagination } from 'antd';
+import {Layout, Menu, Breadcrumb, Icon,message,Modal,Button,Pagination,Select } from 'antd';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {
@@ -30,12 +30,14 @@ const {
 const {
     handleReadCategories,
     handleCreateCategory,
-    handleDeleteCategory
+    handleDeleteCategory,
+    handleGetCurrentCate
 
 } = category_module
 
 const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
+const Option = Select.Option;
 
 require( './override.less')
 require( './App.scss')
@@ -88,6 +90,7 @@ export class App extends Component {
             .then(()=>{
                 this.props.getCurrentPage()
             })
+        this.props.readCategories()
     }
 
     // changeTheme = (value) => {
@@ -102,15 +105,15 @@ export class App extends Component {
     //     });
     // };
 
-    handleEditArticle(id,imgUrl,title,html){
-        console.log('submit',id,imgUrl,title,html);
+    handleEditArticle(id,params){
+        console.log('submit',params);
         if(this.state.loading){
             return;
         }
         this.setState({
            loading:true
         });
-        this.props.updateArticle(id,{art_img:imgUrl,art_content:html,art_title:title})
+        this.props.updateArticle(id,params)
             .then(()=>{
                 this.setState({
                     loading:false
@@ -122,8 +125,8 @@ export class App extends Component {
             })
     }
 
-    handleAddArticle(imgUrl,title,html){
-        console.log('add article',title,html);
+    handleAddArticle(params){
+         console.log('add article',params);
 
         if(this.state.loading){
             return;
@@ -131,7 +134,7 @@ export class App extends Component {
         this.setState({
             loading:true
         });
-        this.props.createArticle({art_img:imgUrl,art_title:title,art_content:html})
+        this.props.createArticle(params)
             .then(()=>{
                 this.setState({
                     loading:false
@@ -172,6 +175,17 @@ export class App extends Component {
         }
     };
 
+    //选择类别
+    handleOnSelect =(value)=>{
+
+        // console.log('value',value);
+        this.props.getCurrentCate(value)
+        this.props.readArticles(1,10,value,true)
+            .then(()=>{
+                this.props.getCurrentPage()
+            })
+    };
+
     render() {
         // console.log('articles',this.props.articles);
 
@@ -179,11 +193,12 @@ export class App extends Component {
         const {
             articles,
             count,
-            current,
+            currentPage,
             readCategories,
             createCategory,
             deleteCategory,
-            categories
+            categories,
+            currentCate
 
         } = this.props
         return (
@@ -233,9 +248,22 @@ export class App extends Component {
                                                 <Button
                                                     type = "primary"
                                                     onClick={()=>history.push('/add/article')}
+                                                    style = {{margin:'10px 0 0 1%'}}
                                                 >
                                                     新建文章
                                                 </Button>
+                                                <Select value = { currentCate }
+                                                        onChange = {this.handleOnSelect}
+                                                        style = {{marginLeft: '30px',width:120}}
+                                                >
+                                                    <Option value = "" key = {'all'}>全部</Option>
+                                                    {
+                                                        this.props.categories.map( ({_id,cat_name})=>
+                                                            <Option value = {_id} key = {_id}>
+                                                                {cat_name}
+                                                            </Option>)
+                                                    }
+                                                </Select>
                                                 <ArticleList
                                                     articles={articles}
                                                     onClickDel = {(id)=>{
@@ -249,7 +277,7 @@ export class App extends Component {
                                                     defaultPageSize = {10}
                                                     style = {{width:300,margin:'0 auto',marginTop:'10px'}}
                                                     defaultCurrent={1}
-                                                    current={current}
+                                                    current={ currentPage }
                                                     onChange={this.handleOnPageChange}
                                                 />
                                                 <Modal
@@ -272,18 +300,20 @@ export class App extends Component {
                                         render = {({match,...rest})=>(<EditArticle
                                             article = { articles &&
                                             articles.find(el=>el._id == match.params.art_id)}
-                                            onSubmit = { (imgUrl,title,html)=>this.handleEditArticle(match.params.art_id,imgUrl,title,html) }
+                                            onSubmit = { (params)=>this.handleEditArticle(match.params.art_id,params) }
                                             loading = { this.state.loading }
                                             {...rest}
                                             match = {match}
+                                            categories={ categories }
                                         />)}
                                     />
                                     <Route
                                         path = "/add/article"
                                         name = "新建文章"
                                         render = {props=><EditArticle
-                                            onSubmit={(imgUrl,title,html)=>this.handleAddArticle(imgUrl,title,html)}
+                                            onSubmit={(params)=>this.handleAddArticle(params)}
                                             loading = { this.state.loading }
+                                            categories={ categories }
                                         />}
                                     />
                                     <Route
@@ -307,17 +337,17 @@ export class App extends Component {
 }
 
 function mapStateToProps(state) {
-    const { listOfPage,currentData,current } = state.article_state;
+    const { listOfPage,currentData,currentPage } = state.article_state;
     const { count } =  listOfPage;
     // console.log('count currentPage',count,currentPage);
     const { category_state } = state
-    const { categories} = category_state
+    const { categories,currentCate} = category_state
     return {
         articles:currentData,
         count,
-        current,
-        listOfPage,
-        categories
+        currentPage,
+        categories,
+        currentCate
     }
 }
 
@@ -331,7 +361,8 @@ function mapDispatchToProps(dispatch) {
 
         readCategories:handleReadCategories,
         createCategory:handleCreateCategory,
-        deleteCategory:handleDeleteCategory
+        deleteCategory:handleDeleteCategory,
+        getCurrentCate:handleGetCurrentCate
     }, dispatch);
 }
 

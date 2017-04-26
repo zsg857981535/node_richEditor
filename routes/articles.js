@@ -178,7 +178,8 @@ router.get('/articles', function (req, res, next) {
     //分页查询
     var page = req.query.page && parseInt(req.query.page) || 1,
         pageSize = req.query.pageSize && parseInt(req.query.pageSize) || 2,//这里queryString 传过来的是字符串,要转换为number
-        populate = 'cat_id',//join 查询
+        // populate = 'cat_id',//join 查询
+        populate = '',
         cat_id = req.query.cat_id,//
         queryParams = cat_id ? {cat_id:mongoose.Types.ObjectId(cat_id)} : {},//按照文章类别查询
         sortParams = {art_createTime: 'desc'};
@@ -221,7 +222,7 @@ router.get('/articles/group',function(req,res,next){
 
 router.get('/article/:article_id', function (req, res, next) {
     var id = req.params.article_id;
-    if (id == 'undefined') {
+    if (id == 'undefined'|| id != undefined) {
         res.send('article not found');
     }
     Article.findById(id, function (err, article) {
@@ -249,7 +250,7 @@ router.post('/article', upload.array(), function (req, res, next) {
     if (!title || !content || !img) {
         res.send({
             status: false,
-            message: 'Title and content is required'
+            message: 'Title and content and img is required'
         })
         return
     }
@@ -257,7 +258,7 @@ router.post('/article', upload.array(), function (req, res, next) {
     article.art_content = content;
     article.art_title = title;
     article.art_img = img;
-    article.cat_id = cat_id != undefined ? mongoose.Types.ObjectId(cat_id) : null;// 比较undefined 不能就加引号,undefined是对象
+    article.cat_id = cat_id != undefined  || cat_id != 'undefined' ? mongoose.Types.ObjectId(cat_id) : null;// 比较undefined 不能就加引号,undefined是对象
 
     //todo check content
     Article.create(article, function (err) {
@@ -317,16 +318,17 @@ router.put('/article/:article_id', upload.array(), function (req, res, next) {
             })
             return
         } else {
-            if (title != undefined) {
+            //这里防止前端将undefined 传过来,比较的是字符串
+            if (title != 'undefined'|| title != undefined) {
                 article.art_title = title
             }
-            if (content != undefined) {
+            if (content != 'undefined' || content != undefined) {
                 article.art_content = content
             }
-            if(img != undefined){
+            if(img != 'undefined' || img != undefined){
                 article.art_img = img
             }
-            if(cat_id != undefined){
+            if(cat_id != 'undefined' || cat_id != undefined){
                 article.cat_id = cat_id
             }
         }

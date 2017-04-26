@@ -76,12 +76,12 @@ export function createHandlers(entity) {
                 listOfPage: newData
             }
         },
-        ['GET_CURRENT']:(state,action)=>{
-            let { current,currentData } = action
+        ['GET_CURRENT_PAGE']:(state,action)=>{
+            let { currentPage,currentData } = action
 
             return {
                 ...state,
-                current,
+                currentPage,
                 currentData
             }
         },

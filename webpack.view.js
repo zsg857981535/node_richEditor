@@ -1,6 +1,7 @@
 /**
- * Created by DaGuo on 2017/3/15.
+ * Created by DaGuo on 2017/4/26.
  */
+
 var path = require('path');
 var webpack = require('webpack')
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -18,7 +19,7 @@ var config = {
 
 
     entry:{
-        app: [ './app/index.js'],
+        app: [ './app/index_view.js'],
         vendor:[
             'react',
             'react-dom',
@@ -35,7 +36,7 @@ var config = {
 
         // the target directory for all outputs files
         //must be an absolute path (use the Node.js module)
-        path: path.resolve(__dirname,  'admin_dist' ), //string
+        path: path.resolve(__dirname,  'view_dist' ), //string
 
         // the filename template for entry chunks (所有打包代码块的入口文件名)
         filename: 'bundle.js?[hash]',
@@ -173,7 +174,7 @@ var config = {
         }),
         new webpack.DefinePlugin({
             'process.env':{
-               'NODE_ENV':JSON.stringify(process.env.NODE_ENV)
+                'NODE_ENV':JSON.stringify(process.env.NODE_ENV)
             }
         }),
     ]
@@ -182,12 +183,12 @@ var config = {
 
 if(DEV){
     config.entry.app.unshift(
-        'webpack-dev-server/client?http://localhost:3001',
+        'webpack-dev-server/client?http://localhost:3002',
         'webpack/hot/only-dev-server'
     );
     config.plugins = config.plugins.concat([
         new webpack.HotModuleReplacementPlugin(),
-        new OpenBrowserPlugin({ url: 'http://localhost:3001' })
+        new OpenBrowserPlugin({ url: 'http://localhost:3002' })
     ]);
 
 
@@ -216,4 +217,4 @@ if(DEV){
     ]);
 }
 
-module.exports = config;
+module.exports = config

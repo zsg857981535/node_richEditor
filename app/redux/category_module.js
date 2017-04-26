@@ -12,14 +12,15 @@ const READ_CATEGORIES = 'READ_CATEGORIES';
 const CREATE_CATEGORY= 'CREATE_CATEGORY';
 const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 const DELETE_CATEGORY = 'DELETE_CATEGORY';
-const GET_CURRENT = 'GET_CURRENT'
+const GET_CURRENT = 'GET_CURRENT_CATE'
+
 
 const controlAsync = makeActionCreator(CONTROL_READ_CATEGORIES,'loading');
 const readCategories = makeActionCreator(READ_CATEGORIES, 'categories');
 const createCategory = makeActionCreator(CREATE_CATEGORY);
 const updateCategory = makeActionCreator(UPDATE_CATEGORY);
 const deleteCategory = makeActionCreator(DELETE_CATEGORY);
-const getCurrent = makeActionCreator(GET_CURRENT,'current','currentData')
+const getCurrent = makeActionCreator(GET_CURRENT,'currentCate') // get current category
 
 
 export function handleReadCategories(isForced=false) {
@@ -33,9 +34,9 @@ export function handleReadCategories(isForced=false) {
             })
                 .then(res => res.json())
                 .then(json=>{
-                    let { categories } = json
+                    let { data } = json
                     DEV && console.log('read categories:',json);
-                    dispatch(readCategories(categories))
+                    dispatch(readCategories(data))
                     dispatch(controlAsync(false))
                 })
                 .catch(e=>{
@@ -44,6 +45,7 @@ export function handleReadCategories(isForced=false) {
         }
     }
 }
+
 
 export function handleCreateCategory(params){
     return (dispatch)=>{
@@ -79,9 +81,19 @@ export function handleDeleteCategory(id){
             })
     }
 }
+
+export function handleGetCurrentCate(current_cate='') {
+    return (dispatch)=>{
+        dispatch(getCurrent(current_cate))
+    }
+}
+
+
+
 const initialState = {
     loading:false,
-    categories: []
+    categories: [],
+    currentCate:'' //当前选择类别
 };
 export const category_state = createReducer(initialState,{
     [CONTROL_READ_CATEGORIES]:(state,action)=>{
@@ -107,5 +119,13 @@ export const category_state = createReducer(initialState,{
         return {
             ...state
         }
+    },
+    [GET_CURRENT]:(state,action)=>{
+        let { currentCate } = action
+        return {
+            ...state,
+            currentCate
+        }
+
     }
 });

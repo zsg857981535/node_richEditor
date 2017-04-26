@@ -46,11 +46,16 @@ export default class Category extends Component{
     handleInputConfirm = () => {
         const state = this.state;
         const inputValue = state.inputValue;
-        const { onAddTag } = this.props
-        onAddTag && onAddTag({cat_name:inputValue})
-            .then(()=>{
-                this.props.fetchData(true)
-            })
+        const { onAddTag,tags } = this.props
+        //是否已经存在该类别
+        const result = tags.find((el)=>el.cat_name === inputValue)
+        // console.log('input result',result);
+        if(result ==  undefined && inputValue !== ''){
+            onAddTag && onAddTag({cat_name:inputValue})
+                .then(()=>{
+                    this.props.fetchData(true)
+                })
+        }
         this.setState({
             inputVisible: false,
             inputValue: '',
@@ -67,7 +72,7 @@ export default class Category extends Component{
                 {tags.map(({cat_name:tag,_id}) => {
                     const isLongTag = tag.length > 20;
                     const tagElem = (
-                        <Popconfirm placement = "right" title = {'确定删除该分类标签?'} onConfirm = {()=>this.handleConfirm(_id)}>
+                        <Popconfirm key = {_id} placement = "right" title = {'确定删除该分类标签?'} onConfirm = {()=>this.handleConfirm(_id)}>
                             <Tag key={_id} closable>
                                 {isLongTag ? `${tag.slice(0, 20)}...` : tag}
                             </Tag>
