@@ -22,7 +22,8 @@ const {
     handleUpdateArticle,
     handleDeleteArticle,
     handleReadGroup,
-    getCurrentPage
+    getCurrentPage,
+    getArticle
 } = article_module;
 
 const {
@@ -68,7 +69,7 @@ class View extends Component {
         // });
 
         /*back to top button*/
-        var offset = 300;
+        var offset = 1000;
         var duration = 300;
         $(window).scroll(function () {
             if ($(this).scrollTop() > offset) {
@@ -112,12 +113,12 @@ class View extends Component {
     };
 
     render() {
-        const article = {
-            art_img: require('./art_img.png'),
-            art_title: '测试文章详情标题',
-            art_createTime: '2017-04-15 下午14:00',
-            art_content: '<p>测试文章内容</p>'
-        };
+        // const article = {
+        //     art_img: require('./art_img.png'),
+        //     art_title: '测试文章详情标题',
+        //     art_createTime: '2017-04-15 下午14:00',
+        //     art_content: '<p>测试文章内容</p>'
+        // };
         return (
             <Router>
                 <div>
@@ -130,8 +131,13 @@ class View extends Component {
                                    onClickCate = {this.handleCateClick}
                                />}
                     />
-                    <Route path="/article" exact
-                           render={({...rest}) => <Article article={article} {...rest}/>}/>
+                    <Route path="/article/:id" exact
+                           render={({match,...rest}) =>
+                               <Article
+                                   article={this.props.articles.find(el=>el._id == match.params.id)}
+                                   {...rest}
+                                   match = {match}
+                                   fetchData = {getArticle}/>}/>
                     <a href="#" className="back-to-top">
                         <Icon type="up-square"/>
                     </a>

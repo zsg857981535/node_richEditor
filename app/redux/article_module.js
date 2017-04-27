@@ -161,6 +161,14 @@ export function getCurrentPage(currentPage=1){
     }
 }
 
+//get single article
+export function getArticle(id) {
+    return request({
+        method:'GET',
+        url: `${ARTICLE.article}/${id}`
+    })
+}
+
 
 
 //reducer

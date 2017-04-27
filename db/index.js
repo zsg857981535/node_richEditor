@@ -14,6 +14,8 @@ var mongoose = require('mongoose');
 // };
 
 // var pool = new pg.Pool(config);
+var mongodbStr = 'mongodb://127.0.0.1:27017/test'
+
 var connectDB = function(dbType){
    if(typeof dbType !== 'string'){
        throw  new Error('db type should be string');
@@ -62,12 +64,12 @@ var connectDB = function(dbType){
        //     console.error('idle client error', err.message, err.stack)
        // })
            return;
-       case'mongo':
+       case'mongodb':
            //todo error handle
-           mongoose.connect('mongodb://127.0.0.1:27017/test');
+           mongoose.connect(mongodbStr);
            return;
        default:
-           throw new Error('database can not found');
+           throw new Error('database can not be found');
    }
 };
 

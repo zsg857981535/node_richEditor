@@ -310,10 +310,11 @@ export class App extends Component {
                                     <Route
                                         path = "/add/article"
                                         name = "新建文章"
-                                        render = {props=><EditArticle
+                                        render = {({...rest})=><EditArticle
                                             onSubmit={(params)=>this.handleAddArticle(params)}
                                             loading = { this.state.loading }
                                             categories={ categories }
+                                            {...rest}
                                         />}
                                     />
                                     <Route

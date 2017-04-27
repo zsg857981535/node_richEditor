@@ -3,7 +3,7 @@
  */
 import React, {PropTypes, Component} from 'react'
 import Editor from '../components/Editor'
-import {Button, Input, Upload, Icon, Modal, Select} from 'antd'
+import {Button, Input, Upload, Icon, Modal, Select,message} from 'antd'
 import {HOST, ARTICLE} from '../constant'
 const Option = Select.Option
 
@@ -42,7 +42,7 @@ export default class EditArticle extends Component {
     handleCancel = () => this.setState({previewVisible: false});
 
     handleChange = ({file, fileList}) => {
-        console.log('fileList', fileList)
+        // console.log('fileList', fileList)
         if (file.status == 'done') {
             this.setState({imgUrl: file.response.imgUrl});
         }
@@ -64,6 +64,11 @@ export default class EditArticle extends Component {
             {title, imgUrl,cat_id} = this.state,
             { onSubmit } = this.props
         // console.log('title',title,html);
+
+        if(!title || !imgUrl || !cat_id || !html){
+            message.error('内容不完整哟')
+            return
+        }
         const params = {
             art_title:title,
             art_img: imgUrl,
@@ -82,10 +87,22 @@ export default class EditArticle extends Component {
     };
     handleOnSelect = (value) => {
 
-        console.log('value', value);
+        // console.log('value', value);
         this.setState({
             cat_id:value
         })
+    };
+    handleBeforeUpload = file=>{
+        // console.log('beforeUpload',file);
+        const isIMG = /image/i.test(file.type);
+        if (!isIMG) {
+            message.error('You can only upload image!');
+        }
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+            message.error('Image must smaller than 2MB!');
+        }
+        return isIMG && isLt2M;
     };
 
     render() {
@@ -112,6 +129,7 @@ export default class EditArticle extends Component {
                         onRemove={this.handleRemove}
                         name='art_img'
                         fileList={ fileList }
+                        beforeUpload={this.handleBeforeUpload}
                     >
                         {fileList.length == 1 ? null : uploadButton}
                     </Upload>

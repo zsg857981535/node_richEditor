@@ -73,7 +73,7 @@ export default class Category extends Component{
                     const isLongTag = tag.length > 20;
                     const tagElem = (
                         <Popconfirm key = {_id} placement = "right" title = {'确定删除该分类标签?'} onConfirm = {()=>this.handleConfirm(_id)}>
-                            <Tag key={_id} closable>
+                            <Tag key={_id} closable onClose = {e=>e.preventDefault()}>
                                 {isLongTag ? `${tag.slice(0, 20)}...` : tag}
                             </Tag>
                         </Popconfirm>

@@ -222,7 +222,7 @@ router.get('/articles/group',function(req,res,next){
 
 router.get('/article/:article_id', function (req, res, next) {
     var id = req.params.article_id;
-    if (id == 'undefined'|| id != undefined) {
+    if (id == 'undefined' && id != undefined) {
         res.send('article not found');
     }
     Article.findById(id, function (err, article) {
@@ -258,7 +258,7 @@ router.post('/article', upload.array(), function (req, res, next) {
     article.art_content = content;
     article.art_title = title;
     article.art_img = img;
-    article.cat_id = cat_id != undefined  || cat_id != 'undefined' ? mongoose.Types.ObjectId(cat_id) : null;// 比较undefined 不能就加引号,undefined是对象
+    article.cat_id = cat_id != undefined  && cat_id != 'undefined' ? mongoose.Types.ObjectId(cat_id) : null;// 比较undefined 不能就加引号,undefined是对象
 
     //todo check content
     Article.create(article, function (err) {
@@ -319,19 +319,20 @@ router.put('/article/:article_id', upload.array(), function (req, res, next) {
             return
         } else {
             //这里防止前端将undefined 传过来,比较的是字符串
-            if (title != 'undefined'|| title != undefined) {
+            if (title != 'undefined'&& title != undefined) {
                 article.art_title = title
             }
-            if (content != 'undefined' || content != undefined) {
+            if (content != 'undefined' && content != undefined) {
                 article.art_content = content
             }
-            if(img != 'undefined' || img != undefined){
+            if(img != 'undefined' && img != undefined){
                 article.art_img = img
             }
-            if(cat_id != 'undefined' || cat_id != undefined){
+            if(cat_id != 'undefined' && cat_id != undefined){
                 article.cat_id = cat_id
             }
         }
+        console.log('update instance',article);
         Article.updateByInstance(article, function (err) {
             if (err) {
                 res.send({status: false, message: 'Updated failure'});

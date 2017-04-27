@@ -16,7 +16,7 @@ const articles = Array.from(new Array(10)).map((item,index)=>({
     art_content:'Table 是最常用展示数据的方式之一，可是一个产品中往往很多非常类似的 Table，但是我们碰到的情况往往是 Ta...'
 }));
 
-const CategoryList = ({categories,sum,onClickCate,selected})=>(
+const CategoryList = ({categories,sum,onClickCate,selected,showMore,onReadAll})=>(
     <div className="category-container">
         <Category
             key = {'all'}
@@ -36,7 +36,7 @@ const CategoryList = ({categories,sum,onClickCate,selected})=>(
                 />
             )
         }
-        <a className="get-all">More</a>
+        { /*<a className="get-all" > 更多</a>*/}
     </div>
 );
 
@@ -52,15 +52,21 @@ const Divide = ({category})=>(
         <span className="hr"></span>
     </div>
 );
-
+const cut = (str)=>{
+  const start = str.indexOf('<p>') + 3,
+      end = str.indexOf("</p>");
+  // console.log('start end',start,end);
+   return str.substring(start,end).slice(0,20) + '...'
+};
 const ArticleRow = ({article,onClick})=>(
     <div className="article-row" onClick={onClick}>
         <img src = {article.art_img}/>
         <div className="right-content">
             <h2>{article.art_title}</h2>
-            <p dangerouslySetInnerHTML={{__html:article.art_content}}>
-
-            </p>
+            {/*
+            <p>
+                {cut(article.art_content)}
+            </p>*/}
         </div>
     </div>
 );
@@ -72,7 +78,7 @@ const ArticleList = ({articles,onRowClick})=>(
                 <ArticleRow
                     key = {article._id}
                     article = {article}
-                    onClick = {onRowClick}
+                    onClick = {onRowClick.bind(null,article._id)}
                 />
             )
         }
@@ -81,6 +87,7 @@ const ArticleList = ({articles,onRowClick})=>(
 
 // # View Blog
 export default class Blog extends Component{
+
 
     render(){
         const { articlesGroup,onClickCate,currentCate,articles,categories,count } = this.props
@@ -97,11 +104,10 @@ export default class Blog extends Component{
                     categories = {articlesGroup}
                     onClickCate = {onClickCate} selected = {currentCate}
                     sum = {sum()}
-
                 />
                 <Divide category = {category && category.cat_name || '全部'}/>
                 <ArticleList articles = {articles}
-                             onRowClick = {()=>this.props.history.push('/article')}
+                             onRowClick = {(id)=>this.props.history.push(`/article/${id}`)}
                 />
                 <Pagination size="small" total={count} style = {{width:300,margin:'0 auto'}} />
             </div>
