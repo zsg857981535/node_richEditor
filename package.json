@@ -7,7 +7,7 @@
     "start:admin": "cross-env NODE_ENV=development node webpack.server.js",
     "start:view": "cross-env NODE_ENV=development node webpack.server_view.js",
     "webpack_admin": "webpack -p --config webpack.config.js --progress --colors",
-    "webpack_view":"webpack -p --config webpack.view.js --progress --colors",
+    "webpack_view": "webpack -p --config webpack.view.js --progress --colors",
     "build:admin": "cross-env NODE_ENV=production rimraf admin_dist/ && npm run webpack_admin",
     "build:view": "cross-env NODE_ENV=production rimraf view_dist/ && npm run webpack"
   },

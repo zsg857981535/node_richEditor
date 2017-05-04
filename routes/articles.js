@@ -40,6 +40,7 @@ var Model = Article.Model;
 var queryHelper = require('../models/query_helper');
 var pageQuery = queryHelper.pageQuery;
 var mongoose = require('mongoose');
+const api_url = 'http://119.29.199.51:3000'
 
 //rename the uploaded file
 var storage = multer.diskStorage({
@@ -346,14 +347,14 @@ router.put('/article/:article_id', upload.array(), function (req, res, next) {
 //上传文章题图
 router.post('/upload',upload.array('art_img'),function(req,res,next){
     // console.log('upload art_img:',req.files[0]);
-    res.send({imgUrl:'http://localhost:3000/uploads/' + req.files[0].filename});
+    res.send({imgUrl:api_url + '/uploads/' + req.files[0].filename});
 });
 
 
 // 编辑器上传图片
 router.post('/uploadImg', upload.array('wangEditorH5File'), function (req, res, next) {
     // console.log('req.files', req.files);
-    res.send('http://localhost:3000/uploads/' + req.files[0].filename)
+    res.send(api_url + '/uploads/' + req.files[0].filename)
 });
 
 module.exports = router;

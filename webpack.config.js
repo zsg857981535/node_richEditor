@@ -45,7 +45,7 @@ var config = {
          */
 
         //the url to the output directory resolved relative to the HTML page (输出目录的url解析相对于HTML页面)
-        publicPath: '/static', //string
+        publicPath: '/', //string
         /*
          publicPath: "",
          publicPath: "https://cdn.example.com/",
@@ -175,7 +175,7 @@ var config = {
             'process.env':{
                'NODE_ENV':JSON.stringify(process.env.NODE_ENV)
             }
-        }),
+        })
     ]
 
 };
