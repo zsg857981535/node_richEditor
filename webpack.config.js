@@ -170,11 +170,6 @@ var config = {
         new webpack.optimize.CommonsChunkPlugin({
             name:'vendor',
             filename:'vendor.js?[hash]'
-        }),
-        new webpack.DefinePlugin({
-            'process.env':{
-               'NODE_ENV':JSON.stringify(process.env.NODE_ENV)
-            }
         })
     ]
 
@@ -187,6 +182,11 @@ if(DEV){
     );
     config.plugins = config.plugins.concat([
         new webpack.HotModuleReplacementPlugin(),
+        new webpack.DefinePlugin({
+            'process.env':{
+                'NODE_ENV':JSON.stringify('development')
+            }
+        }),
         new OpenBrowserPlugin({ url: 'http://localhost:3001' })
     ]);
 
@@ -205,6 +205,11 @@ if(DEV){
     // }
 }else{
     config.plugins = config.plugins.concat([
+        new webpack.DefinePlugin({
+            'process.env':{
+                'NODE_ENV':JSON.stringify('production')
+            }
+        }),
 
         new webpack.optimize.UglifyJsPlugin({
             compress: {
