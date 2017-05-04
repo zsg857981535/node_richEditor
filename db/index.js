@@ -1,7 +1,7 @@
 /**
  * Created by DaGuo on 2017/3/7.
  */
-var pg = require('pg');//postgres
+// var pg = require('pg');//postgres
 var mongoose = require('mongoose');
 // var config = {
 //     user:'boyiwin!',
