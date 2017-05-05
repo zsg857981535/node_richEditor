@@ -13,7 +13,7 @@ const ArticleList = (props) => {
     return props.articles ?
         <div className="articles-container">
             { props.articles.map((el) => {
-                    const longTitle = el.art_title.length > 10;
+                    const longTitle = el.art_title.length >= 10;
                     return  <Card
                         title={longTitle  ?
                             <Tooltip title = {el.art_title}>{el.art_title.slice(0, 5) + '...'}</Tooltip>

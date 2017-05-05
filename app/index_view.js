@@ -12,7 +12,7 @@ import View from './View'
 const store = configureStore();
 
 
-console.log('store',store.getState())
+// console.log('store',store.getState())
 import 'override.less'
 import './View.scss'
 ReactDOM.render(

@@ -61,11 +61,12 @@ export default class EditArticle extends Component {
 
     handleOnClick = () => {
         let html = this.editor.getContent(),
-            {title, imgUrl,cat_id} = this.state,
+            {title, imgUrl = '',cat_id} = this.state,
             { onSubmit } = this.props
         // console.log('title',title,html);
 
-        if(!title || !imgUrl || !cat_id || !html){
+        //imgUrl is not required
+        if(!title || !cat_id || !html){
             message.error('内容不完整哟')
             return
         }

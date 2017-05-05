@@ -27,7 +27,7 @@ function verifyToken(req, res, next) {
             })
         } else {
             // if there is no token,return an error
-            res.status(403).send({
+            res.send({
                 status: false,
                 message: 'No token provided'
             });

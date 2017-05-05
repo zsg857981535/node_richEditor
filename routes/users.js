@@ -43,7 +43,9 @@ var upload = multer({ storage:storage })
 
 
 //authenticate
-
+router.post('/auth',upload.array(),function(req,res,next){
+    res.send({status:true,message:'Authorization successful'})
+})
 
 router.post('/getToken', upload.array(),function (req, res, next) {
 
@@ -114,6 +116,8 @@ router.post('/user', upload.array(),function (req, res, next) {
         res.send({ status:true,message: 'User created successfully'})
     })
 });
+
+
 
 // PUT a user
 router.put('/auth/user/:user_id',upload.array(), function (req, res, next) {

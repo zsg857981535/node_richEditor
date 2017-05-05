@@ -146,7 +146,6 @@ export function handleDeleteArticle(article_id){
                     DEV && console.log('delete article:',json.message);
                 })
                 .catch(e=>{
-
                     DEV && console.error('delete article:',e.message);
                 })
         }

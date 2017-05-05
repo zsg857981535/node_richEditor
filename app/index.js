@@ -12,7 +12,7 @@ import App from './App';
 const store = configureStore();
 
 
-console.log('store',store.getState())
+// console.log('store',store.getState())
 
 require('../lib/wangEditor/js/wangEditor.min')
 require('../lib/wangEditor/css/wangEditor.css')

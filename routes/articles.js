@@ -40,7 +40,7 @@ var Model = Article.Model;
 var queryHelper = require('../models/query_helper');
 var pageQuery = queryHelper.pageQuery;
 var mongoose = require('mongoose');
-const api_url = 'http://119.29.199.51:3000'
+const api_url = process.env.NODE_ENV == 'production' ? 'http://119.29.199.51:3000': 'http://localhost:3000'
 
 //rename the uploaded file
 var storage = multer.diskStorage({
@@ -320,13 +320,22 @@ router.put('/article/:article_id', upload.array(), function (req, res, next) {
             return
         } else {
             //这里防止前端将undefined 传过来,比较的是字符串
-            if (title != 'undefined'&& title != undefined) {
+            if (title != 'undefined'
+                && title != undefined
+                && title != ''
+            ) {
                 article.art_title = title
             }
-            if (content != 'undefined' && content != undefined) {
+            if (content != 'undefined'
+                && content != undefined
+                && content != ''
+            ) {
                 article.art_content = content
             }
-            if(img != 'undefined' && img != undefined){
+            if(img != 'undefined'
+                && img != undefined
+                && img != ''
+            ){
                 article.art_img = img
             }
             if(cat_id != 'undefined' && cat_id != undefined){
