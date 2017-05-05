@@ -90,13 +90,8 @@ export class App extends Component {
             visible_del: false //删除文章对话框
         };
     }
-
-
-    componentWillMount() {
-        this.props.autoAuth()
-    }
-
     componentDidMount() {
+        this.props.autoAuth()
         this.props.readArticles()
             .then(() => {
                 this.props.getCurrentPage()
@@ -399,10 +394,10 @@ function mapStateToProps(state) {
     const {listOfPage, currentData, currentPage} = state.article_state;
     const {count} =  listOfPage;
     // console.log('count currentPage',count,currentPage);
-    const {category_state} = state
-    const {categories, currentCate} = category_state
+    const {categories, currentCate} = state.category_state
     const {isAuthorized} = state.user_state
     return {
+        listOfPage,
         articles: currentData,
         count,
         currentPage,

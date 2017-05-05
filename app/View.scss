@@ -203,9 +203,10 @@ body {
     margin-bottom: 50px;
 
     img {
-      flex-basis: 240px;
+      //flex-basis: 240px;
       height: 180px;
       object-fit: cover;
+      width: 50%;
     }
 
     .right-content {
@@ -236,4 +237,5 @@ body {
   right: 100px;
   bottom: 50px;
   font-size: 30px;
+  display: none;
 }

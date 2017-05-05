@@ -22,7 +22,9 @@ var config = {
         vendor:[
             'react',
             'react-dom',
-            'antd'
+            'redux',
+            'react-redux',
+            "react-router"
         ]
     },
     // entry:[

@@ -69,7 +69,7 @@ class View extends Component {
         // });
 
         /*back to top button*/
-        var offset = 1000;
+        var offset = 100;
         var duration = 300;
         $(window).scroll(function () {
             if ($(this).scrollTop() > offset) {
@@ -129,6 +129,7 @@ class View extends Component {
                                    {...rest}
                                    {...this.props}
                                    onClickCate = {this.handleCateClick}
+                                   OnPageChange = { this.handleOnPageChange }
                                />}
                     />
                     <Route path="/article/:id" exact
@@ -150,9 +151,9 @@ function mapStateToProps(state) {
     const {listOfPage, currentData, currentPage, groupData} = state.article_state;
     const {count} =  listOfPage;
     // console.log('count currentPage',count,currentPage);
-    const {category_state} = state
-    const {categories, currentCate} = category_state
+    const {categories, currentCate} = state.category_state
     return {
+        listOfPage,
         articles: currentData,
         articlesGroup: groupData,
         count,
