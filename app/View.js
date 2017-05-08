@@ -34,6 +34,7 @@ const {
 
 } = category_module
 
+import NotMatch from './components/NotMatch'
 
 const Navigation = ({className}) => (
     <header className={`navigation-container ${className || ''}`}>
@@ -83,31 +84,31 @@ class View extends Component {
             $('html, body').animate({scrollTop: 0}, duration);
         })
         this.props.readArticles()
-            .then(()=>{
+            .then(() => {
                 this.props.getCurrentPage()
             })
         this.props.readCategories()
         this.props.readGroup()
     }
 
-    handleCateClick=(id)=>{
-        console.log('cate click id',id);
+    handleCateClick = (id) => {
+        // console.log('cate click id',id);
         this.props.getCurrentCate(id)
-        this.props.readArticles(1,10,id,true)
-            .then(()=>{
+        this.props.readArticles(1, 10, id, true)
+            .then(() => {
                 this.props.getCurrentPage()
             })
     };
-    handleOnPageChange=(page,pageSize)=>{
-        console.log('page pageSize',page,pageSize);
+    handleOnPageChange = (page, pageSize) => {
+        // console.log('page pageSize',page,pageSize);
         //判断有没有这一页的数据,有就不加载
-        const { listOfPage } = this.props
-        if(!listOfPage[page]){
-            this.props.readArticles(page,pageSize)
-                .then(()=>{
+        const {listOfPage} = this.props
+        if (!listOfPage[page]) {
+            this.props.readArticles(page, pageSize, this.props.currentCate, true)
+                .then(() => {
                     this.props.getCurrentPage(page)
                 })
-        }else{
+        } else {
             this.props.getCurrentPage(page)
         }
     };
@@ -123,22 +124,27 @@ class View extends Component {
             <Router>
                 <div>
                     <Navigation ref={nav => this.nav = nav}/>
-                    <Route path="/" exact
-                           render={({...rest}) =>
-                               <Blog
-                                   {...rest}
-                                   {...this.props}
-                                   onClickCate = {this.handleCateClick}
-                                   OnPageChange = { this.handleOnPageChange }
-                               />}
-                    />
-                    <Route path="/article/:id" exact
-                           render={({match,...rest}) =>
-                               <Article
-                                   article={this.props.articles.find(el=>el._id == match.params.id)}
-                                   {...rest}
-                                   match = {match}
-                                   fetchData = {getArticle}/>}/>
+                    <Switch>
+                        <Route path="/" exact
+                               render={({...rest}) =>
+                                   <Blog
+                                       {...rest}
+                                       {...this.props}
+                                       onClickCate={this.handleCateClick}
+                                       OnPageChange={ this.handleOnPageChange }
+                                   />}
+                        />
+                        <Route path="/article/:id" exact
+                               render={({match, ...rest}) =>
+                                   <Article
+                                       article={this.props.articles.find(el => el._id == match.params.id)}
+                                       {...rest}
+                                       match={match}
+                                       fetchData={getArticle}
+                                   />}
+                        />
+                        <Route component={ NotMatch }/>
+                    </Switch>
                     <a href="#" className="back-to-top">
                         <Icon type="up-square"/>
                     </a>

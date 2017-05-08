@@ -17,7 +17,7 @@ import {
     Category,
     Login
 } from './containers'
-
+import NotMatch from './components/NotMatch'
 
 import {article_module, category_module, user_module} from './redux';
 const {
@@ -51,34 +51,6 @@ require('./override.less')
 require('./App.scss')
 
 
-// const Crumbs = props=>(<Breadcrumb>
-//     {
-//         props.routes.map((route,i)=>
-//             <Breadcrumb.Item>
-//                 <Link to = {route.path}>{route.name}</Link>
-//              </Breadcrumb.Item>
-//         )
-//     }
-// </Breadcrumb>);
-//
-// const RouteWithRoutes = route=>(<Route
-//         path = {route.path}
-//         render = {props=>(
-//             <route.component { ...props} routes = {route.routes}/>
-//         )}
-//     />
-// );
-// const routes = [
-//     {
-//         path:'/articles',
-//         name:'文章列表'
-//     },
-//     {
-//         path:'/article:art_id',
-//         name:'文章修改'
-//     }
-// ];
-
 
 export class App extends Component {
 
@@ -90,6 +62,7 @@ export class App extends Component {
             visible_del: false //删除文章对话框
         };
     }
+
     componentDidMount() {
         this.props.autoAuth()
         this.props.readArticles()
@@ -125,7 +98,7 @@ export class App extends Component {
                     loading: false
                 });
                 message.success("修改成功")
-                this.props.readArticles(1,10,this.props.currentCate,true)
+                this.props.readArticles(1, 10, this.props.currentCate, true)
                     .then(() => {
                         this.props.getCurrentPage()
                     })
@@ -150,7 +123,7 @@ export class App extends Component {
                     loading: false
                 });
                 message.success("保存成功");
-                this.props.readArticles(1,10,this.props.currentCate,true)
+                this.props.readArticles(1, 10, this.props.currentCate, true)
                     .then(() => {
                         this.props.getCurrentPage()
                     })
@@ -164,10 +137,10 @@ export class App extends Component {
         const {current_id} = this.state;
         this.props.deleteArticle(current_id)
             .then(() => {
-                this.props.readArticles(1,10,this.props.currentCate,true)
-                    . then(() => {
+                this.props.readArticles(1, 10, this.props.currentCate, true)
+                    .then(() => {
                         this.props.getCurrentPage()
-                });
+                    });
                 this.handleModalVisible('visible_del', false)
             })
             .catch(() => {
@@ -184,7 +157,7 @@ export class App extends Component {
         //判断有没有这一页的数据,有就不加载
         const {listOfPage} = this.props
         if (!listOfPage[page]) {
-            this.props.readArticles(page, pageSize)
+            this.props.readArticles(page, pageSize, this.props.currentCate, true)
                 .then(() => {
                     this.props.getCurrentPage(page)
                 })
@@ -282,7 +255,8 @@ export class App extends Component {
                                             <Menu.Item key="2"><Link to="/categories">类别列表</Link></Menu.Item>
                                         </SubMenu>
                                         <SubMenu key="sub2" title={<span><Icon type="user"/>用户管理</span>}>
-                                            <Menu.Item key="1"><a to="" onClick={() => this.props.logout()}>退出登录</a></Menu.Item>
+                                            <Menu.Item key="1"><a to=""
+                                                                  onClick={() => this.props.logout()}>退出登录</a></Menu.Item>
                                         </SubMenu>
                                     </Menu>
                                 </Sider>
@@ -294,92 +268,95 @@ export class App extends Component {
                                      <Breadcrumb.Item>App</Breadcrumb.Item>
                                      </Breadcrumb>*/}
                                     <Content style={{background: '#fff', padding: 24, margin: 0, minHeight: 280}}>
-                                        <Route exact path="/" render={({history}) => {
-                                            return (
-                                                <div>
-                                                    <Button
-                                                        type="primary"
-                                                        onClick={() => history.push('/add/article')}
-                                                        style={{margin: '10px 0 0 1%'}}
-                                                    >
-                                                        新建文章
-                                                    </Button>
-                                                    <Select value={ currentCate }
-                                                            onChange={this.handleOnSelect}
-                                                            style={{marginLeft: '30px', width: 120}}
-                                                    >
-                                                        <Option value="" key={'all'}>全部</Option>
-                                                        {
-                                                            this.props.categories.map(({_id, cat_name}) =>
-                                                                <Option value={_id} key={_id}>
-                                                                    {cat_name}
-                                                                </Option>)
-                                                        }
-                                                    </Select>
-                                                    <ArticleList
-                                                        articles={articles}
-                                                        onClickDel={(id) => {
-                                                            //console.log("delete id",id);
-                                                            this.setState({current_id: id})
-                                                            this.handleModalVisible('visible_del', true)
-                                                        }}
-                                                    />
-                                                    <Pagination
-                                                        total={count}
-                                                        defaultPageSize={10}
-                                                        style={{width: 300, margin: '0 auto', marginTop: '10px'}}
-                                                        defaultCurrent={1}
-                                                        current={ currentPage }
-                                                        onChange={this.handleOnPageChange}
-                                                    />
-                                                    <Modal
-                                                        title="删除文章"
-                                                        visible={this.state.visible_del}
-                                                        onOk={() => this.handleDeleteArticle()}
-                                                        onCancel={() => this.handleModalVisible('visible_del', false)}
-                                                    >
-                                                        <p>确定删除该文章吗?</p>
-                                                    </Modal>
-                                                </div>
-                                            )
-                                        }}/>
-                                        {/*
-                                         <Route path="/article/:art_id" render={({match, location, history}) => (
-                                         <Article article={history.location.state.article}/>)}/>*/}
-                                        <Route
-                                            path="/article/:art_id"
-                                            name="编辑文章"
-                                            render={({match, ...rest}) => (<EditArticle
-                                                article={ articles &&
-                                                articles.find(el => el._id == match.params.art_id)}
-                                                onSubmit={ (params) => this.handleEditArticle(match.params.art_id, params) }
-                                                loading={ this.state.loading }
-                                                {...rest}
-                                                match={match}
-                                                categories={ categories }
-                                            />)}
-                                        />
-                                        <Route
-                                            path="/add/article"
-                                            name="新建文章"
-                                            render={({...rest}) => <EditArticle
-                                                onSubmit={(params) => this.handleAddArticle(params)}
-                                                loading={ this.state.loading }
-                                                categories={ categories }
-                                                {...rest}
-                                            />}
-                                        />
-                                        <Route
-                                            path="/categories"
-                                            name="类别列表"
-                                            render={props => <Category
-                                                fetchData={ readCategories}
-                                                tags={ categories }
-                                                onRemoveTag={ deleteCategory }
-                                                onAddTag={ createCategory }
+                                        <Switch>
+                                            <Route exact path="/" render={({history}) => {
+                                                return (
+                                                    <div>
+                                                        <Button
+                                                            type="primary"
+                                                            onClick={() => history.push('/add/article')}
+                                                            style={{margin: '10px 0 0 1%'}}
+                                                        >
+                                                            新建文章
+                                                        </Button>
+                                                        <Select value={ currentCate }
+                                                                onChange={this.handleOnSelect}
+                                                                style={{marginLeft: '30px', width: 120}}
+                                                        >
+                                                            <Option value="" key={'all'}>全部</Option>
+                                                            {
+                                                                this.props.categories.map(({_id, cat_name}) =>
+                                                                    <Option value={_id} key={_id}>
+                                                                        {cat_name}
+                                                                    </Option>)
+                                                            }
+                                                        </Select>
+                                                        <ArticleList
+                                                            articles={articles}
+                                                            onClickDel={(id) => {
+                                                                //console.log("delete id",id);
+                                                                this.setState({current_id: id})
+                                                                this.handleModalVisible('visible_del', true)
+                                                            }}
+                                                        />
+                                                        <Pagination
+                                                            total={count}
+                                                            defaultPageSize={10}
+                                                            style={{width: 300, margin: '0 auto', marginTop: '10px'}}
+                                                            defaultCurrent={1}
+                                                            current={ currentPage }
+                                                            onChange={this.handleOnPageChange}
+                                                        />
+                                                        <Modal
+                                                            title="删除文章"
+                                                            visible={this.state.visible_del}
+                                                            onOk={() => this.handleDeleteArticle()}
+                                                            onCancel={() => this.handleModalVisible('visible_del', false)}
+                                                        >
+                                                            <p>确定删除该文章吗?</p>
+                                                        </Modal>
+                                                    </div>
+                                                )
+                                            }}/>
+                                            {/*
+                                             <Route path="/article/:art_id" render={({match, location, history}) => (
+                                             <Article article={history.location.state.article}/>)}/>*/}
+                                            <Route
+                                                path="/article/:art_id"
+                                                name="编辑文章"
+                                                render={({match, ...rest}) => (<EditArticle
+                                                    article={ articles &&
+                                                    articles.find(el => el._id == match.params.art_id)}
+                                                    onSubmit={ (params) => this.handleEditArticle(match.params.art_id, params) }
+                                                    loading={ this.state.loading }
+                                                    {...rest}
+                                                    match={match}
+                                                    categories={ categories }
+                                                />)}
+                                            />
+                                            <Route
+                                                path="/add/article"
+                                                name="新建文章"
+                                                render={({...rest}) => <EditArticle
+                                                    onSubmit={(params) => this.handleAddArticle(params)}
+                                                    loading={ this.state.loading }
+                                                    categories={ categories }
+                                                    {...rest}
+                                                />}
+                                            />
+                                            <Route
+                                                path="/categories"
+                                                name="类别列表"
+                                                render={props => <Category
+                                                    fetchData={ readCategories}
+                                                    tags={ categories }
+                                                    onRemoveTag={ deleteCategory }
+                                                    onAddTag={ createCategory }
 
-                                            />}
-                                        />
+                                                />}
+                                            />
+                                            <Route component={ NotMatch }/>
+                                        </Switch>
                                     </Content>
                                 </Layout>
                             </Layout>
