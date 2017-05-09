@@ -32,7 +32,9 @@ app.use(function(req,res,next){
     //     res.setHeader('Access-Control-Allow-Origin', origin);
     // }
     // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Origin', "*");
+
+    //req.get('origin') 请求来自哪个源
+    res.setHeader('Access-Control-Allow-Origin', req.get('origin'));
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
     // Request headers you wish to allow

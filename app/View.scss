@@ -29,6 +29,7 @@ body {
 
   img {
     width: 100%;
+    cursor: -webkit-zoom-in
   }
 
   .article-title {
@@ -45,6 +46,10 @@ body {
 
     margin-top: 40px;
     font-size: 16px;
+
+    img {
+      cursor: -webkit-zoom-in;
+    }
   }
 }
 

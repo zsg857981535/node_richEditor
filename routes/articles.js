@@ -354,6 +354,7 @@ router.put('/article/:article_id', upload.array(), function (req, res, next) {
     })
 });
 //上传文章题图
+// 思考: 这里将返回的图片地址写死?要是ip地址改变了怎么办?
 router.post('/upload',upload.array('art_img'),function(req,res,next){
     // console.log('upload art_img:',req.files[0]);
     res.send({imgUrl:api_url + '/uploads/' + req.files[0].filename});

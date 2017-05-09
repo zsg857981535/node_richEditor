@@ -9,12 +9,7 @@ import {Pagination} from 'antd'
 //     label:'category' + index
 // }));
 
-const articles = Array.from(new Array(10)).map((item, index) => ({
-    id: index,
-    art_img: require('../art_img.png'),
-    art_title: 'React 解析之diff算法解析',
-    art_content: 'Table 是最常用展示数据的方式之一，可是一个产品中往往很多非常类似的 Table，但是我们碰到的情况往往是 Ta...'
-}));
+
 
 const CategoryList = ({categories, sum, onClickCate, selected, showMore, onReadAll}) => (
     <div className="category-container">

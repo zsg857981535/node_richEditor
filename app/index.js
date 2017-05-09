@@ -13,7 +13,8 @@ const store = configureStore();
 
 
 // console.log('store',store.getState())
-
+require('./override.less')
+require('./App.scss')
 require('../lib/wangEditor/js/wangEditor.min')
 require('../lib/wangEditor/css/wangEditor.css')
 ReactDOM.render(

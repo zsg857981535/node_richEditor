@@ -4,7 +4,18 @@
 import React, {PropTypes, Component} from 'react'
 import {Form, Icon, Input, Button, Checkbox} from 'antd';
 const FormItem = Form.Item;
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { withRouter } from 'react-router-dom'
+import { user_module } from '../redux'
+const {
+    handleAuthorize,
+    handleAutoAuth,
+    handleLogOut
+}
+    = user_module
 
+// # admin login
 class Login extends Component {
 
     static propTypes = {
@@ -41,8 +52,30 @@ class Login extends Component {
                 return
             }
         }
-        const { onSubmit } = this.props
-        onSubmit && onSubmit(username,password)
+        // const { onSubmit } = this.props
+        // onSubmit && onSubmit(username,password)
+        this.handleAuthorize(username,password)
+    };
+
+    //login
+    handleAuthorize = (username, password) => {
+        if (this.state.loading) {
+            return
+        }
+        this.setState({
+            loading: true,
+            loginStatus: ''
+        })
+        this.props.authorize(username, password)
+            .then(() => {
+                this.setState({loading: false})
+            })
+            .catch(e => {
+                this.setState({
+                    loginStatus: e.message,
+                    loading: false
+                })
+            })
     };
     handleOnChange = e => {
         const name = e.target.name, value = e.target.value
@@ -52,8 +85,8 @@ class Login extends Component {
     };
 
     render() {
-        const {validate = {}, help = {}} = this.state
-        const { loginStatus } = this.props
+        const {validate = {}, help = {}, loginStatus,loading  } = this.state
+        // const { loginStatus } = this.props
         return (
             <Form onSubmit={this.handleSubmit}
                   onChange={this.handleOnChange }
@@ -87,7 +120,9 @@ class Login extends Component {
                 <FormItem>
                     <Checkbox>Remember me</Checkbox>
                     <a className="login-form-forgot" href="">Forgot password</a>
-                    <Button type="primary" htmlType="submit" className="login-form-button">
+                    <Button type="primary" htmlType="submit" className="login-form-button"
+                            loading={loading}
+                    >
                         Log in
                     </Button>
                     Or <a href="">register now!</a>
@@ -96,4 +131,19 @@ class Login extends Component {
         );
     }
 }
-export default Login
+function mapStateToProps(state){
+
+    const {isAuthorized} = state.user_state
+    return {
+        isAuthorized
+    }
+}
+
+function mapDispatchToProps(dispatch){
+    return bindActionCreators({
+        authorize: handleAuthorize,
+        autoAuth: handleAutoAuth,
+        logout: handleLogOut
+    },dispatch)
+}
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Login))

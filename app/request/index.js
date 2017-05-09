@@ -36,7 +36,7 @@ export default function request (options = {}){
              req = new Request(uri,{
                  method,
                  headers,
-                 //mode:'no-cors',
+                 mode:'cors',
              });
          }else{
              req = new Request(uri);
@@ -60,7 +60,7 @@ export default function request (options = {}){
          req = new Request(uri,{
              method,
              headers,
-             // mode:'no-cors',
+             mode:'cors',
              body:formData
          });
 

@@ -34,7 +34,7 @@ export default class EditArticle extends Component {
             uid: -1,
             name: 'xxx.png',
             status: 'done',
-            url: this.props.article.art_img,
+            url:  this.props.article.art_img,
             //thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
         }] : [],
         cat_id: this.props.article.cat_id || ''
@@ -44,6 +44,7 @@ export default class EditArticle extends Component {
     handleChange = ({file, fileList}) => {
         // console.log('fileList', fileList)
         if (file.status == 'done') {
+            // file.response.imgUrl
             this.setState({imgUrl: file.response.imgUrl});
         }
         this.setState({fileList})
