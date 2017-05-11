@@ -1,21 +1,20 @@
 /**
  * Created by DaGuo on 2017/4/19.
  */
-//# 前端展示入口
-
-
+//# 前台展示入口
 import React, {Component, PropTypes} from 'react'
 import {
     BrowserRouter as Router,
     Route,
     Link,
-    Switch
+    Switch,
+    withRouter
 } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {Article, Blog} from './containers'
+import { Blog,Article,Login} from './index'
 import {Icon} from 'antd'
-import {article_module, category_module} from './redux';
+import {article_module, category_module} from '../redux';
 const {
     handleReadArticles,
     handleCreateArticle,
@@ -34,9 +33,7 @@ const {
 
 } = category_module
 
-import NotMatch from './components/NotMatch'
-
-const Navigation = ({className}) => (
+const Navigation = ({className,isAuthorized}) => (
     <header className={`navigation-container ${className || ''}`}>
         <Link to='' className="logo">LOGO</Link>
         <nav>
@@ -44,10 +41,14 @@ const Navigation = ({className}) => (
                 <li><Link to='/'>BLOG</Link></li>
                 <li><Link to=''>ABOUT ME</Link></li>
                 <li><Link to=''>CONTACT ME</Link></li>
+                <li><Link to= { isAuthorized ? '/admin' : '/login'}>{isAuthorized ? 'ADMIN' : 'LOGIN'}</Link></li>
             </ul>
         </nav>
     </header>
 );
+
+
+
 
 
 class View extends Component {
@@ -120,21 +121,16 @@ class View extends Component {
         //     art_createTime: '2017-04-15 下午14:00',
         //     art_content: '<p>测试文章内容</p>'
         // };
+        const { match:{ url },isAuthorized} = this.props
         return (
-            <Router>
                 <div>
-                    <Navigation ref={nav => this.nav = nav}/>
+                    <Navigation
+                        isAuthorized = {isAuthorized}
+                        ref={nav => this.nav = nav}
+                    />
                     <Switch>
-                        <Route path="/" exact
-                               render={({...rest}) =>
-                                   <Blog
-                                       {...rest}
-                                       {...this.props}
-                                       onClickCate={this.handleCateClick}
-                                       OnPageChange={ this.handleOnPageChange }
-                                   />}
-                        />
-                        <Route path="/article/:id" exact
+                        <Route path= {`/article/:id`}
+                               exact
                                render={({match, ...rest}) =>
                                    <Article
                                        article={this.props.articles.find(el => el._id == match.params.id)}
@@ -143,13 +139,21 @@ class View extends Component {
                                        fetchData={getArticle}
                                    />}
                         />
-                        <Route component={ NotMatch }/>
+                        <Route path= { url }
+                               exact
+                               render={({...rest}) =>
+                                   <Blog
+                                       {...rest}
+                                       {...this.props}
+                                       onClickCate={this.handleCateClick}
+                                       OnPageChange={ this.handleOnPageChange }
+                                   />}
+                        />
                     </Switch>
                     <a href="#" className="back-to-top">
                         <Icon type="up-square"/>
                     </a>
                 </div>
-            </Router>
         )
     }
 }
@@ -158,6 +162,7 @@ function mapStateToProps(state) {
     const {count} =  listOfPage;
     // console.log('count currentPage',count,currentPage);
     const {categories, currentCate} = state.category_state
+    const { isAuthorized } = state.user_state
     return {
         listOfPage,
         articles: currentData,
@@ -165,7 +170,8 @@ function mapStateToProps(state) {
         count,
         currentPage,
         categories,
-        currentCate
+        currentCate,
+        isAuthorized
     }
 }
 
@@ -185,4 +191,4 @@ function mapDispatchToProps(dispatch) {
     }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(View);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(View))

@@ -51,6 +51,8 @@ export function handleAutoAuth(){
                         dispatch(authorize(true))
                     }
                 })
+        }else{
+            return Promise.resolve()
         }
     }
 }

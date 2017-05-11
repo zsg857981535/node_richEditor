@@ -1,16 +1,3 @@
-
-/*
-  =======
-  colors
-  =======
- */
-
-
-
-
-
-
-
 //flex list
 @mixin flexGrid($columnNumber,$spacingPercent){
   $contentPercent: 100% - $spacingPercent;
@@ -35,20 +22,15 @@
 #root{
    width:100%;
    height: 100%;
- }
-.app_container{
-  font-size: 16px;
-  //color:red;
-  width:100%;
-  height:100%
 }
 
+/*=================admin=====================*/
 /*
     =======
     文章列表
     =======
  */
-.articles-container{
+.admin-articles-container{
 
   @include flexGrid(6,10%);
 
@@ -84,6 +66,7 @@
  ===========
  */
 .login-form {
+  width: 100%;
   max-width: 300px;
   position: absolute;
   top:30%;
@@ -96,5 +79,262 @@
 }
 .login-form-button {
   width: 100%;
+}
+
+.admin-header{
+
+  padding: 0;
+  .logo{
+      height: 32px;
+      background: #333;
+      border-radius: 6px;
+      margin: 16px;
+      width: 150px;
+      line-height: 32px;
+      text-align: center;
+      color: #FFF;
+    a{
+      color:#FFF
+    }
+  }
+}
+
+
+/*=================前台====================*/
+
+/*
+    =======
+    显示单篇文章
+    =======
+ */
+
+.view-article-container {
+
+  width: 100%;
+  max-width: 650px;
+  margin: 10px auto 50px;
+
+  .back-arrow{
+    font-size: 16px;
+    display: inline-block;
+    padding: 10px 15px 20px 0;
+  }
+
+  img {
+    width: 100%;
+    cursor: -webkit-zoom-in
+  }
+
+  .article-title {
+
+    font-size: 30px;
+    margin-top: 20px;
+  }
+  .article-time {
+
+    margin-top: 20px;
+    font-size: 14px;
+  }
+  .article-content {
+
+    margin-top: 40px;
+    font-size: 16px;
+
+    img {
+      cursor: -webkit-zoom-in;
+    }
+  }
+}
+
+/*
+   ==========
+   navigation
+   ==========
+ */
+
+.navigation-container {
+
+  background: #FFF;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  //position: fixed;
+  //top: 0;
+  //left: 0;
+  //width: 100%;
+  a {
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+
+  .logo {
+    padding: 15px 20px;
+  }
+
+  nav {
+
+    padding: 0 20px;
+
+    ul {
+
+      list-style: none;
+      margin: 0;
+
+      li {
+
+        float: left;
+
+        a {
+
+          display: inline-block;
+          padding: 15px 20px;
+
+        }
+      }
+    }
+  }
+}
+
+.is-hide {
+  transform: translateY(-100px);
+}
+
+.clear {
+  &:after {
+    content: '';
+    clear: both;
+  }
+}
+
+/*
+    =======
+     Blog
+    =======
+ */
+
+.blog-container {
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto 50px;
+
+  .category-container {
+    margin-top: 10px;
+    padding: 10px 10px 10px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    //background: #BBBBBB;
+
+    .category-item {
+      display: inline-block;
+      height: 30px;
+      line-height: 30px;
+      padding: 0 15px;
+      border-radius: 15px;
+      background: #FFF;
+      margin: 5px 5px 5px 0;
+      box-sizing: border-box;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      font-size: 14px;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    .selected {
+      background: #e9e9e9;
+      border:none;
+    }
+
+    .get-all{
+      display: inline-block;
+      height: 30px;
+      line-height: 30px;
+      padding:0 15px;
+      font-size: 14px;
+      margin: 5px;
+    }
+  }
+
+  .category-divide {
+
+    position: relative;
+    margin-top: 30px;
+    line-height: 22px;
+
+    h2 {
+      margin: 0;
+      display: inline-block;
+      font-size: 16px;
+      position: relative;
+      background: #FFF;
+      z-index:1;
+      padding-right: 16px;
+    }
+
+    .hr {
+
+      height: 1px;
+      display: inline-block;
+      background: rgba(0, 0, 0, 0.1);
+      position: absolute;
+      right: 0;
+      left:0;
+      top: 50%;
+      color: #f0f0f0;
+    }
+  }
+
+  .article-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    cursor: pointer;
+    margin-bottom: 50px;
+
+    img {
+      //flex-basis: 240px;
+      height: 180px;
+      object-fit: cover;
+      width: 50%;
+    }
+
+    .right-content {
+      margin-left: 10px;
+
+      h2 {
+        margin: 0;
+        font-size: 18px;
+      }
+      p{
+        line-height: 24px;
+        font-size: 16px;
+
+        .read-all{
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+
+  .article-list{
+    margin: 30px 0;
+  }
+}
+
+.back-to-top{
+  position: fixed;
+  right: 100px;
+  bottom: 50px;
+  font-size: 30px;
+  display: none;
 }
 

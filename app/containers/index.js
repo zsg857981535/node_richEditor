@@ -1,13 +1,13 @@
 /**
  * Created by DaGuo on 2017/4/19.
  */
-import ArticleList from  './ArticleList'
+
+import Login from './Login'
+import Main from './Main'
+import View from './View'
 import Article from './Article'
-import EditArticle from './EditArticle'
+import ArticleList from './ArticleList'
 import Blog from './Blog'
 import Category from './Category'
-import Login from './Login'
-import Main from './Layout'
-
-
-export { ArticleList,Article,EditArticle,Blog,Category,Login,Main}
+import EditArticle from './EditArticle'
+export { Login,Main,View,Article,ArticleList,Blog,Category,EditArticle}

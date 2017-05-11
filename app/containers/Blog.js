@@ -3,6 +3,7 @@
  */
 import React, {Component, PropTypes} from 'react'
 import {Pagination} from 'antd'
+import { withRouter } from 'react-router-dom'
 
 // const categories = Array.from(new Array(20)).map((item,index)=>({
 //     id:index,
@@ -47,21 +48,11 @@ const Divide = ({category}) => (
         <span className="hr"></span>
     </div>
 );
-const cut = (str) => {
-    const start = str.indexOf('<p>') + 3,
-        end = str.indexOf("</p>");
-    // console.log('start end',start,end);
-    return str.substring(start, end).slice(0, 20) + '...'
-};
 const ArticleRow = ({article, onClick}) => (
     <div className="article-row" onClick={onClick}>
         <img src={article.art_img}/>
         <div className="right-content">
             <h2>{article.art_title}</h2>
-            {/*
-             <p>
-             {cut(article.art_content)}
-             </p>*/}
         </div>
     </div>
 );
@@ -81,7 +72,7 @@ const ArticleList = ({articles, onRowClick}) => (
 );
 
 // # View Blog
-export default class Blog extends Component {
+ class Blog extends Component {
 
 
     render() {
@@ -115,3 +106,5 @@ export default class Blog extends Component {
         )
     }
 }
+//Note:必须要用withRouter 再包装一次,否则不会跳转组件
+export default withRouter(Blog)

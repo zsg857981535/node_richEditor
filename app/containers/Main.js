@@ -16,7 +16,7 @@ import {
     ArticleList,
     EditArticle,
     Category,
-} from '../containers'
+} from './index'
 import NotMatch from '../components/NotMatch'
 
 import {article_module, category_module, user_module} from '../redux';
@@ -48,7 +48,7 @@ const {Header, Content, Sider} = Layout;
 const Option = Select.Option;
 
 
-
+// # admin main layout
 export class Main extends Component {
 
     constructor(props) {
@@ -60,8 +60,15 @@ export class Main extends Component {
         };
     }
 
+    componentWillMount() {
+        this.props.autoAuth().then(()=>{
+            if (!this.props.isAuthorized) {
+                this.props.history.replace('/login')
+            }
+        })
+    }
+
     componentDidMount() {
-        this.props.autoAuth()
         this.props.readArticles()
             .then(() => {
                 this.props.getCurrentPage()
@@ -185,13 +192,14 @@ export class Main extends Component {
             deleteCategory,
             categories,
             currentCate
-
         } = this.props
+
+        const { match :{url}} = this.props
         return (
             //todo 怎么解决渲染短暂的闪烁问题
             <Layout style={{height: '100%'}}>
-                <Header className="header">
-                    <div className="logo"/>
+                <Header className="admin-header">
+                    <div className="logo"><Link to = '/'>LOGO</Link></div>
                     {/*
                      <Menu
                      theme="dark"
@@ -214,12 +222,19 @@ export class Main extends Component {
                             style={{height: '100%'}}
                         >
                             <SubMenu key="sub1" title={<span><Icon type="book"/>文章管理</span>}>
-                                <Menu.Item key="1"><Link to="/">文章列表</Link></Menu.Item>
-                                <Menu.Item key="2"><Link to="/categories">类别列表</Link></Menu.Item>
+                                <Menu.Item key="1"><Link to= { url}>文章列表</Link></Menu.Item>
+                                <Menu.Item key="2"><Link to= {`${url}/categories` }>类别列表</Link></Menu.Item>
                             </SubMenu>
                             <SubMenu key="sub2" title={<span><Icon type="user"/>用户管理</span>}>
-                                <Menu.Item key="1"><a to=""
-                                                      onClick={() => this.props.logout()}>退出登录</a></Menu.Item>
+                                <Menu.Item key="1">
+                                    <a to=""
+                                       onClick={() => {
+                                           this.props.logout()
+                                           this.props.history.replace('/login')
+                                       }}
+                                    >
+                                        退出登录</a>
+                                </Menu.Item>
                             </SubMenu>
                         </Menu>
                     </Sider>
@@ -232,12 +247,50 @@ export class Main extends Component {
                          </Breadcrumb>*/}
                         <Content style={{background: '#fff', padding: 24, margin: 0, minHeight: 280}}>
                             <Switch>
-                                <Route exact path="/" render={({history}) => {
+                                <Route
+                                    path={`${url}/article/:art_id`}
+                                    name="编辑文章"
+                                    exact
+                                    render={({match, ...rest}) => (<EditArticle
+                                        article={ articles &&
+                                        articles.find(el => el._id == match.params.art_id)}
+                                        onSubmit={ (params) => this.handleEditArticle(match.params.art_id, params) }
+                                        loading={ this.state.loading }
+                                        {...rest}
+                                        match={match}
+                                        categories={ categories }
+                                    />)}
+                                />
+                                <Route
+                                    path={`${url}/add/article`}
+                                    name="新建文章"
+                                    exact
+                                    render={({...rest}) => <EditArticle
+                                        onSubmit={(params) => this.handleAddArticle(params)}
+                                        loading={ this.state.loading }
+                                        categories={ categories }
+                                        {...rest}
+                                    />}
+                                />
+                                <Route
+                                    path={`${url}/categories`}
+                                    name="类别列表"
+                                    exact
+                                    render={props => <Category
+                                        fetchData={ readCategories}
+                                        tags={ categories }
+                                        onRemoveTag={ deleteCategory }
+                                        onAddTag={ createCategory }
+
+                                    />}
+                                />
+                                {/*没有IndexRoute之后想渲染默认的路由,只能把这个路由放在后面,匹配/admin */}
+                                <Route exact path= {url} render={({history}) => {
                                     return (
                                         <div>
                                             <Button
                                                 type="primary"
-                                                onClick={() => history.push('/add/article')}
+                                                onClick={() => history.push('/admin/add/article')}
                                                 style={{margin: '10px 0 0 1%'}}
                                             >
                                                 新建文章
@@ -281,44 +334,6 @@ export class Main extends Component {
                                         </div>
                                     )
                                 }}/>
-                                {/*
-                                 <Route path="/article/:art_id" render={({match, location, history}) => (
-                                 <Article article={history.location.state.article}/>)}/>*/}
-                                <Route
-                                    path="/article/:art_id"
-                                    name="编辑文章"
-                                    render={({match, ...rest}) => (<EditArticle
-                                        article={ articles &&
-                                        articles.find(el => el._id == match.params.art_id)}
-                                        onSubmit={ (params) => this.handleEditArticle(match.params.art_id, params) }
-                                        loading={ this.state.loading }
-                                        {...rest}
-                                        match={match}
-                                        categories={ categories }
-                                    />)}
-                                />
-                                <Route
-                                    path="/add/article"
-                                    name="新建文章"
-                                    render={({...rest}) => <EditArticle
-                                        onSubmit={(params) => this.handleAddArticle(params)}
-                                        loading={ this.state.loading }
-                                        categories={ categories }
-                                        {...rest}
-                                    />}
-                                />
-                                <Route
-                                    path="/categories"
-                                    name="类别列表"
-                                    render={props => <Category
-                                        fetchData={ readCategories}
-                                        tags={ categories }
-                                        onRemoveTag={ deleteCategory }
-                                        onAddTag={ createCategory }
-
-                                    />}
-                                />
-                                <Route component={ NotMatch }/>
                             </Switch>
                         </Content>
                     </Layout>

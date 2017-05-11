@@ -35,7 +35,7 @@ class Article extends Component {
     render() {
         const {article} = this.state
         return (
-            <div className="article-container">
+            <div className="view-article-container">
                 <a className="back-arrow"
                    onClick={() => this.props.history.goBack()}
                 >

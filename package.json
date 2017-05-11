@@ -4,12 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www ",
-    "start:admin": "cross-env NODE_ENV=development node webpack.server.js",
-    "start:view": "cross-env NODE_ENV=development node webpack.server_view.js",
-    "webpack_admin": "webpack -p --config webpack.config.js --progress --colors",
-    "webpack_view": "webpack -p --config webpack.view.js --progress --colors",
-    "build:admin": "cross-env NODE_ENV=production rimraf admin_dist/ && npm run webpack_admin",
-    "build:view": "cross-env NODE_ENV=production rimraf view_dist/ && npm run webpack_view"
+    "start:app": "cross-env NODE_ENV=development node webpack.server.js",
+    "webpack": "webpack -p --config webpack.config.js --progress --colors",
+    "build": "cross-env NODE_ENV=production rimraf dist/ && npm run webpack"
   },
   "dependencies": {
     "antd": "^2.8.1",

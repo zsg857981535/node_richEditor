@@ -37,10 +37,10 @@ var config = {
 
         // the target directory for all outputs files
         //must be an absolute path (use the Node.js module)
-        path: path.resolve(__dirname,  'admin_dist' ), //string
+        path: path.resolve(__dirname,  'dist' ), //string
 
         // the filename template for entry chunks (所有打包代码块的入口文件名)
-        filename: 'bundle.js?[hash]',
+        filename: 'bundle.[chunkhash].js',
         /*
          filename: "[name].js", // for multiple entry points
          filename: "[chunkhash].js", // for long term caching
@@ -163,7 +163,7 @@ var config = {
 
 
     plugins:[
-        new ExtractTextPlugin('style.css?[hash]'),
+        new ExtractTextPlugin('style.[chunkhash].css'),
         // new HtmlWebpackPlugin({
         //     template: './index.html',
         //     inject: 'body',
@@ -171,7 +171,7 @@ var config = {
         // }),
         new webpack.optimize.CommonsChunkPlugin({
             name:'vendor',
-            filename:'vendor.js?[hash]'
+            filename:'vendor.js'
         })
     ]
 

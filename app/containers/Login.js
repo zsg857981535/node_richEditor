@@ -69,6 +69,7 @@ class Login extends Component {
         this.props.authorize(username, password)
             .then(() => {
                 this.setState({loading: false})
+                this.props.history.replace('/admin')
             })
             .catch(e => {
                 this.setState({
