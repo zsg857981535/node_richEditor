@@ -164,11 +164,6 @@ var config = {
 
     plugins:[
         new ExtractTextPlugin('style.[chunkhash].css'),
-        // new HtmlWebpackPlugin({
-        //     template: './index.html',
-        //     inject: 'body',
-        //     filename: 'index.html',
-        // }),
         new webpack.optimize.CommonsChunkPlugin({
             name:'vendor',
             filename:'vendor.js'
@@ -219,7 +214,7 @@ if(DEV){
                 drop_console: false,
             }
         }),
-
+        new HtmlWebpackPlugin()
     ]);
 }
 
