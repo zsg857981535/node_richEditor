@@ -167,6 +167,11 @@ var config = {
         new webpack.optimize.CommonsChunkPlugin({
             name:'vendor',
             filename:'vendor.js'
+        }),
+        new HtmlWebpackPlugin({
+            title: 'Blog | React',
+            template: './index.html',
+            inject: 'body'
         })
     ]
 
@@ -213,8 +218,7 @@ if(DEV){
                 warnings: false,
                 drop_console: false,
             }
-        }),
-        new HtmlWebpackPlugin()
+        })
     ]);
 }
 

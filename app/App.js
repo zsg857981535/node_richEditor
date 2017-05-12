@@ -8,9 +8,9 @@ const App = ()=> (
     <Router>
         <Switch>
             {/*这里用嵌套路由不能加exact做精确匹配,否则不能匹配到父级container*/}
-            <Route path = '/'   exact  component={ View }/>
             <Route path = '/login' exact component={ Login }/>
             <Route path = '/admin' component={ Main }/>
+            <Route path = '/' component={ View }/>
             {/*<Route path = '/blog'  component={ View }/>*/}
             <Route component={ NotMatch }/>
         </Switch>

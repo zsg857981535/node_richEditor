@@ -14,7 +14,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { Blog,Article,Login} from './index'
 import {Icon} from 'antd'
-import {article_module, category_module} from '../redux';
+import {article_module, category_module,user_module} from '../redux';
 const {
     handleReadArticles,
     handleCreateArticle,
@@ -33,8 +33,10 @@ const {
 
 } = category_module
 
-const Navigation = ({className,isAuthorized}) => (
-    <header className={`navigation-container ${className || ''}`}>
+const { handleAutoAuth } = user_module
+
+const Navigation = ({className,id,isAuthorized,ref}) => (
+    <header className={`navigation-container ${className || ''}`} id = {id}>
         <Link to='' className="logo">LOGO</Link>
         <nav>
             <ul className="clear">
@@ -55,21 +57,20 @@ class View extends Component {
 
     componentDidMount() {
         //auto hide navigation
-        // let c, currentScrollTop = 0,
-        //     nav = $(this.nav),
-        //     b = nav.height();
-        // console.log('nav,height',nav,b);
-        // $(window).scroll(function () {
-        //     let a = $(window).scrollTop();
-        //     currentScrollTop = a;
-        //     if (c < currentScrollTop && a > (b + b)) {
-        //         nav.addClass("is-hide");
-        //     } else if (c > currentScrollTop && !(a <= b)) {
-        //         nav.removeClass("is-hide");
-        //     }
-        //     c = currentScrollTop;
-        // });
-
+        let c, currentScrollTop = 0,
+            nav = $('#nav'),
+            b = nav.height();
+        console.log('nav,height',nav,b);
+        $(window).scroll(function () {
+            let a = $(window).scrollTop();
+            currentScrollTop = a;
+            if (c < currentScrollTop && a > (b + b)) {
+                nav.addClass("is-hide");
+            } else if (c > currentScrollTop && !(a <= b)) {
+                nav.removeClass("is-hide");
+            }
+            c = currentScrollTop;
+        });
         /*back to top button*/
         var offset = 100;
         var duration = 300;
@@ -90,6 +91,7 @@ class View extends Component {
             })
         this.props.readCategories()
         this.props.readGroup()
+        this.props.autoAuth()
     }
 
     handleCateClick = (id) => {
@@ -126,7 +128,7 @@ class View extends Component {
                 <div>
                     <Navigation
                         isAuthorized = {isAuthorized}
-                        ref={nav => this.nav = nav}
+                        id = 'nav'
                     />
                     <Switch>
                         <Route path= {`/article/:id`}
@@ -187,7 +189,9 @@ function mapDispatchToProps(dispatch) {
         readCategories: handleReadCategories,
         createCategory: handleCreateCategory,
         deleteCategory: handleDeleteCategory,
-        getCurrentCate: handleGetCurrentCate
+        getCurrentCate: handleGetCurrentCate,
+
+        autoAuth:handleAutoAuth
     }, dispatch);
 }
 

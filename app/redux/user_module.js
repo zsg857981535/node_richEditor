@@ -1,11 +1,9 @@
 /**
  * Created by DaGuo on 2017/5/4.
  */
-import {makeActionCreator, createReducer,createHandlers} from './create_helper';
+import {makeActionCreator, createReducer,log,logE} from './create_helper';
 import request,{ getToken,setToken,removeToken} from '../request';
 import { USER} from '../constant'
-
-const DEV = process.env.NODE_ENV == 'development';
 
 const AUTHORIZE = 'AUTHORIZE';
 const authorize = makeActionCreator(AUTHORIZE,'isAuthorized')
@@ -21,7 +19,7 @@ export function handleAuthorize(username,password){
         })
             .then(res=>res.json())
             .then(json=>{
-                DEV && console.log('authorize',json)
+                log('authorize',json)
                 if(json.status){
                     const { token } = json
                     setToken(token)
@@ -30,6 +28,9 @@ export function handleAuthorize(username,password){
                     const { message } = json
                     throw new Error(message)
                 }
+            })
+            .catch(e=>{
+                logE('authorize',e.message)
             })
     }
 }
@@ -46,11 +47,14 @@ export function handleAutoAuth(){
                 .then(res=>res.json())
                 .then(json=>{
                     const { status } = json
-                    DEV && console.log('autoAuth:',json);
+                    log('autoAuth',json)
                     if(status){
                         dispatch(authorize(true))
                     }
                 })
+               .catch(e=>{
+                   logE('autoAuth',e.message)
+               })
         }else{
             return Promise.resolve()
         }

@@ -1,7 +1,7 @@
 /**
  * Created by DaGuo on 2017/4/24.
  */
-import {makeActionCreator, createReducer,createHandlers} from './create_helper';
+import {makeActionCreator, createReducer,log,logE} from './create_helper';
 import request from '../request';
 import {CATEGORY} from '../constant'
 
@@ -35,12 +35,12 @@ export function handleReadCategories(isForced=false) {
                 .then(res => res.json())
                 .then(json=>{
                     let { data } = json
-                    DEV && console.log('read categories:',json);
+                    log('read categories',json);
                     dispatch(readCategories(data))
                     dispatch(controlAsync(false))
                 })
                 .catch(e=>{
-                    DEV && console.error('read categories:',e.message)
+                    logE('read categories',e.message)
                 })
         }
     }
@@ -57,10 +57,10 @@ export function handleCreateCategory(params){
             .then(res=>res.json())
             .then(json=>{
                 dispatch(createCategory())
-                DEV && console.log('create category:',json.message)
+                log('create category',json.message)
             })
             .catch(e=>{
-                DEV && console.error('create category:',e.message);
+              logE('create category',e.message);
             })
     }
 }
@@ -74,10 +74,10 @@ export function handleDeleteCategory(id){
             .then(res=>res.json())
             .then(json=>{
                 dispatch(deleteCategory())
-                DEV && console.log('delete category:',json.message)
+                log('delete category',json.message)
             })
             .catch(e=>{
-                DEV && console.error('delete category:',e.message);
+                logE('delete category',e.message);
             })
     }
 }

@@ -10,7 +10,6 @@ import { withRouter } from 'react-router-dom'
 import { user_module } from '../redux'
 const {
     handleAuthorize,
-    handleAutoAuth,
     handleLogOut
 }
     = user_module
@@ -143,7 +142,6 @@ function mapStateToProps(state){
 function mapDispatchToProps(dispatch){
     return bindActionCreators({
         authorize: handleAuthorize,
-        autoAuth: handleAutoAuth,
         logout: handleLogOut
     },dispatch)
 }

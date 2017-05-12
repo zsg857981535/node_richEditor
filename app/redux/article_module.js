@@ -2,7 +2,7 @@
  * Created by DaGuo on 2017/3/22.
  */
 import update from 'react-addons-update';
-import {makeActionCreator, createReducer} from './create_helper';
+import {makeActionCreator, createReducer,log,logE} from './create_helper';
 import request from '../request';
 import {ARTICLE} from '../constant'
 
@@ -57,12 +57,12 @@ export function handleReadArticles(page=1,pageSize=10,cat_id='',forced=false) {
 
                      */
                     const { articles,count,pageCount,pageNumber} = json;
-                    DEV && console.log('read Articles:',json);
+                    log('read Articles',json)
                     json && dispatch(readArticles(pageNumber,articles,pageCount,count));
                     dispatch(controlAsync(false)); //async end
                 })
                 .catch(e=>{
-                    DEV && console.error('read Articles:',e.message);
+                    logE('read Articles',e.message)
                 })
         }
     }
@@ -76,11 +76,11 @@ export function handleReadGroup(){
             .then(res=>res.json())
             .then(json=>{
                 const { data } = json
-                DEV && console.log('read articles group',json);
+                log('read articles group',json)
                 dispatch(readArticlesGroup(data))
             })
             .catch(e=>{
-                DEV && console.error('read articles group',e.message)
+                logE('read articles group',e.message)
             })
     }
 }
@@ -102,10 +102,10 @@ export function handleCreateArticle(params){
                 .then(res=>res.json())
                 .then(json=>{
                     dispatch(createArticle())
-                    DEV && console.log('create article:',json.message);
+                    log('create article',json.message)
                 })
                 .catch(e=>{
-                    DEV && console.error('create article:',e.message);
+                    logE('create article',e.message)
                 })
         }
      }
@@ -123,11 +123,10 @@ export function handleUpdateArticle(article_id,params={}){
                 .then(res=>res.json())
                 .then(json=>{
                     dispatch(updateArticle())
-                    DEV && console.log('update article:',json.message);
+                    log('update article',json.message);
                 })
                 .catch(e=>{
-
-                    DEV && console.error('update article:',e.message);
+                    logE('update article',e.message);
                 })
         }
      }
@@ -143,10 +142,10 @@ export function handleDeleteArticle(article_id){
                 .then(res=>res.json())
                 .then(json=>{
                     dispatch(deleteArticle())
-                    DEV && console.log('delete article:',json.message);
+                    log('delete article',json.message);
                 })
                 .catch(e=>{
-                    DEV && console.error('delete article:',e.message);
+                    logE('delete article',e.message);
                 })
         }
     }

@@ -44,61 +44,11 @@ export function  createReducer(initialState = {
         }
     }
 }
+const DEV = process.env.NODE_ENV == 'development'
+export function log(desc='',info=''){
+    DEV && console.info(desc + ':',info)
+}
 
-/**
- *
- * @param entity
- * @returns {{}} handlers
- */
-export function createHandlers(entity) {
-    return {
-        [`CONTROL_READ_${entity}S`]: (state, action) => {
-            let loading = action.loading;
-            return {
-                ...state,
-                loading
-            }
-        },
-        [`READ_${entity}S`]: (state, action) => {
-            let {pageNumber, list, pageCount, count} = action,
-                {listOfPage} = state,
-                newData = update(listOfPage, {
-                    $merge: {
-                        [pageNumber]: list,
-                        pageCount,
-                        count,
-                        currentPage: pageNumber || 1
-                    }
-                });
-
-            return {
-                ...state,
-                listOfPage: newData
-            }
-        },
-        ['GET_CURRENT_PAGE']:(state,action)=>{
-            let { currentPage,currentData } = action
-
-            return {
-                ...state,
-                currentPage,
-                currentData
-            }
-        },
-        [`CREATE_${entity}`]: (state) => {
-            return {
-                ...state
-            }
-        },
-        [`UPDATE_${entity}`]: (state) => {
-            return {
-                ...state
-            }
-        },
-        [`DELETE_${entity}`]: (state) => {
-            return {
-                ...state
-            }
-        }
-    }
+export function logE (desc='',info=''){
+    DEV && console.error(desc + ':',info)
 }
