@@ -24,7 +24,7 @@ var config = {
             'react-dom',
             'redux',
             'react-redux',
-            "react-router"
+            "react-router-dom"
         ]
     },
     // entry:[
@@ -40,7 +40,7 @@ var config = {
         path: path.resolve(__dirname,  'dist' ), //string
 
         // the filename template for entry chunks (所有打包代码块的入口文件名)
-        filename: 'bundle.[chunkhash].js',
+        filename: 'bundle.[chunkHash].js',
         /*
          filename: "[name].js", // for multiple entry points
          filename: "[chunkhash].js", // for long term caching
@@ -80,7 +80,7 @@ var config = {
 
                 // the loader which should be applied,it'll resolved relative to the context
                 // -loader suffix no longer optional in webpack2
-                loader:DEV ? ['react-hot-loader','babel-loader'] : 'babel-loader',
+                loader: 'babel-loader',
 
                 //options for loader
                 // options:{
@@ -163,7 +163,7 @@ var config = {
 
 
     plugins:[
-        new ExtractTextPlugin('style.[chunkhash].css'),
+        new ExtractTextPlugin('style.[chunkHash].css'),
         new webpack.optimize.CommonsChunkPlugin({
             name:'vendor',
             filename:'vendor.js'
@@ -179,6 +179,7 @@ var config = {
 
 if(DEV){
     config.entry.app.unshift(
+        'react-hot-loader/patch',// activate HMR for React
         'webpack-dev-server/client?http://localhost:3001',
         'webpack/hot/only-dev-server'
     );

@@ -2,13 +2,15 @@
  * Created by DaGuo on 2017/4/19.
  */
 import React, {Component, PropTypes} from 'react'
-import {Icon} from 'antd'
+import {Icon,Modal} from 'antd'
 
 
 //# View article
 class Article extends Component {
     state = {
-        article: {}
+        article: {},
+        visible:false,
+        preview:''
     };
 
     componentDidMount() {
@@ -30,6 +32,19 @@ class Article extends Component {
                     })
                 })
         }
+        let that = this
+        $('img').click(function(){
+            // console.log($(this)[0].src)
+            // console.log('this',that)
+            that.setState({preview:$(this)[0].src},()=>{
+                // console.log('setState callback')
+                that.handleVisible(true)
+            })
+
+        })
+    }
+    handleVisible=(value)=>{
+        this.setState({visible:value})
     }
 
     render() {
@@ -57,6 +72,14 @@ class Article extends Component {
                      dangerouslySetInnerHTML={{__html: article.art_content}}
                 >
                 </div>
+                <Modal
+                    title = ''
+                    visible={this.state.visible}
+                    footer = {null}
+                    onCancel={()=>this.handleVisible(false)}
+                >
+                    {this.state.preview && <img src = {this.state.preview}/>}
+                </Modal>
             </div>
         )
     }

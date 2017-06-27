@@ -24,7 +24,7 @@ export function makeActionCreator(type, ...argNames) {
  * @param handlers  object
  * @returns {Function}  reducer
  */
-export function  createReducer(initialState = {
+export function createReducer(initialState = {
     loading: false,
     listOfPage: {}
     /*
@@ -45,10 +45,10 @@ export function  createReducer(initialState = {
     }
 }
 const DEV = process.env.NODE_ENV == 'development'
-export function log(desc='',info=''){
-    DEV && console.info(desc + ':',info)
+export function log(desc = '', info = '') {
+    DEV && console.info(desc + ':', info)
 }
 
-export function logE (desc='',info=''){
-    DEV && console.error(desc + ':',info)
+export function logE(desc = '', info = '') {
+    DEV && console.error(desc + ':', info)
 }

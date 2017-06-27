@@ -63,11 +63,11 @@ var connectDB = function(dbType){
        //     // and so you might want to handle it and at least log it out
        //     console.error('idle client error', err.message, err.stack)
        // })
-           return;
+           break;
        case'mongodb':
            //todo error handle
            mongoose.connect(mongodbStr);
-           return;
+           break;
        default:
            throw new Error('database can not be found');
    }

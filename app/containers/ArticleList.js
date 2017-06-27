@@ -5,7 +5,7 @@
 
 
 import React from 'react'
-import {Card, Button,Tooltip} from 'antd'
+import {Card, Button, Tooltip} from 'antd'
 import {Link} from 'react-router-dom'
 
 // admin ArticleList
@@ -14,9 +14,9 @@ const ArticleList = (props) => {
         <div className="admin-articles-container">
             { props.articles.map((el) => {
                     const longTitle = el.art_title.length >= 10;
-                    return  <Card
-                        title={longTitle  ?
-                            <Tooltip title = {el.art_title}>{el.art_title.slice(0, 5) + '...'}</Tooltip>
+                    return <Card
+                        title={longTitle ?
+                            <Tooltip title={el.art_title}>{el.art_title.slice(0, 5) + '...'}</Tooltip>
                             :
                             el.art_title
                         }
@@ -30,8 +30,8 @@ const ArticleList = (props) => {
                     >
                         <img alt={el.art_title} src={el.art_img}/>
                     </Card>
-                 }
-                )
+                }
+            )
             }
         </div>
         : <div>loading articles...</div>

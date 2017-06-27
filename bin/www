@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var app = require('../server');
 var debug = require('debug')('node-rich-editor:server');
 var http = require('http');
 var connectDB = require('../db');

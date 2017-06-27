@@ -12,9 +12,16 @@ import {
 } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import { Blog,Article,Login} from './index'
+import {
+    Blog,
+    Article
+}
+    from './index'
+
+
 import {Icon} from 'antd'
-import {article_module, category_module,user_module} from '../redux';
+import {article_module, category_module, user_module} from '../redux';
+
 const {
     handleReadArticles,
     handleCreateArticle,
@@ -33,24 +40,21 @@ const {
 
 } = category_module
 
-const { handleAutoAuth } = user_module
+const {handleAutoAuth} = user_module
 
-const Navigation = ({className,id,isAuthorized,ref}) => (
-    <header className={`navigation-container ${className || ''}`} id = {id}>
+const Navigation = ({className, id, isAuthorized}) => (
+    <header className={`navigation-container ${className || ''}`} id={id}>
         <Link to='' className="logo">LOGO</Link>
         <nav>
             <ul className="clear">
-                <li><Link to='/'>BLOG</Link></li>
-                <li><Link to=''>ABOUT ME</Link></li>
-                <li><Link to=''>CONTACT ME</Link></li>
-                <li><Link to= { isAuthorized ? '/admin' : '/login'}>{isAuthorized ? 'ADMIN' : 'LOGIN'}</Link></li>
+                {/*<li><Link to='/'>BLOG</Link></li>*/}
+                {/*<li><Link to=''>ABOUT ME</Link></li>*/}
+                {/*<li><Link to=''>CONTACT ME</Link></li>*/}
+                <li><Link to={ isAuthorized ? '/admin' : '/login'}>{isAuthorized ? 'ADMIN' : 'LOGIN'}</Link></li>
             </ul>
         </nav>
     </header>
 );
-
-
-
 
 
 class View extends Component {
@@ -60,7 +64,7 @@ class View extends Component {
         let c, currentScrollTop = 0,
             nav = $('#nav'),
             b = nav.height();
-        console.log('nav,height',nav,b);
+        // console.log('nav,height',nav,b);
         $(window).scroll(function () {
             let a = $(window).scrollTop();
             currentScrollTop = a;
@@ -123,39 +127,39 @@ class View extends Component {
         //     art_createTime: '2017-04-15 下午14:00',
         //     art_content: '<p>测试文章内容</p>'
         // };
-        const { match:{ url },isAuthorized} = this.props
+        const {match:{url}, isAuthorized} = this.props
         return (
-                <div>
-                    <Navigation
-                        isAuthorized = {isAuthorized}
-                        id = 'nav'
+            <div>
+                <Navigation
+                    isAuthorized={isAuthorized}
+                    id='nav'
+                />
+                <Switch>
+                    <Route path={`/article/:id`}
+                           exact
+                           render={({match, ...rest}) =>
+                               <Article
+                                   article={this.props.articles.find(el => el._id == match.params.id)}
+                                   {...rest}
+                                   match={match}
+                                   fetchData={getArticle}
+                               />}
                     />
-                    <Switch>
-                        <Route path= {`/article/:id`}
-                               exact
-                               render={({match, ...rest}) =>
-                                   <Article
-                                       article={this.props.articles.find(el => el._id == match.params.id)}
-                                       {...rest}
-                                       match={match}
-                                       fetchData={getArticle}
-                                   />}
-                        />
-                        <Route path= { url }
-                               exact
-                               render={({...rest}) =>
-                                   <Blog
-                                       {...rest}
-                                       {...this.props}
-                                       onClickCate={this.handleCateClick}
-                                       OnPageChange={ this.handleOnPageChange }
-                                   />}
-                        />
-                    </Switch>
-                    <a href="#" className="back-to-top">
-                        <Icon type="up-square"/>
-                    </a>
-                </div>
+                    <Route path={ url }
+                           exact
+                           render={({...rest}) =>
+                               <Blog
+                                   {...rest}
+                                   {...this.props}
+                                   onClickCate={this.handleCateClick}
+                                   OnPageChange={ this.handleOnPageChange }
+                               />}
+                    />
+                </Switch>
+                <a href="#" className="back-to-top">
+                    <Icon type="up-square"/>
+                </a>
+            </div>
         )
     }
 }
@@ -164,7 +168,7 @@ function mapStateToProps(state) {
     const {count} =  listOfPage;
     // console.log('count currentPage',count,currentPage);
     const {categories, currentCate} = state.category_state
-    const { isAuthorized } = state.user_state
+    const {isAuthorized} = state.user_state
     return {
         listOfPage,
         articles: currentData,
@@ -191,7 +195,7 @@ function mapDispatchToProps(dispatch) {
         deleteCategory: handleDeleteCategory,
         getCurrentCate: handleGetCurrentCate,
 
-        autoAuth:handleAutoAuth
+        autoAuth: handleAutoAuth
     }, dispatch);
 }
 

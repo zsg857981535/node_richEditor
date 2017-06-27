@@ -14,10 +14,10 @@ import {
 } from 'react-router-dom';
 import {
     ArticleList,
-    EditArticle,
     Category,
+    EditArticle
 } from './index'
-import NotMatch from '../components/NotMatch'
+
 
 import {article_module, category_module, user_module} from '../redux';
 const {
@@ -61,7 +61,7 @@ export class Main extends Component {
     }
 
     componentWillMount() {
-        this.props.autoAuth().then(()=>{
+        this.props.autoAuth().then(() => {
             if (!this.props.isAuthorized) {
                 this.props.history.replace('/login')
             }
@@ -194,12 +194,11 @@ export class Main extends Component {
             currentCate
         } = this.props
 
-        const { match :{url}} = this.props
+        const {match :{url}} = this.props
         return (
-            //todo 怎么解决渲染短暂的闪烁问题
             <Layout style={{height: '100%'}}>
                 <Header className="admin-header">
-                    <div className="logo"><Link to = '/'>LOGO</Link></div>
+                    <div className="logo"><Link to='/'>LOGO</Link></div>
                     {/*
                      <Menu
                      theme="dark"
@@ -222,8 +221,8 @@ export class Main extends Component {
                             style={{height: '100%'}}
                         >
                             <SubMenu key="sub1" title={<span><Icon type="book"/>文章管理</span>}>
-                                <Menu.Item key="1"><Link to= { url}>文章列表</Link></Menu.Item>
-                                <Menu.Item key="2"><Link to= {`${url}/categories` }>类别列表</Link></Menu.Item>
+                                <Menu.Item key="1"><Link to={ url}>文章列表</Link></Menu.Item>
+                                <Menu.Item key="2"><Link to={`${url}/categories` }>类别列表</Link></Menu.Item>
                             </SubMenu>
                             <SubMenu key="sub2" title={<span><Icon type="user"/>用户管理</span>}>
                                 <Menu.Item key="1">
@@ -285,7 +284,7 @@ export class Main extends Component {
                                     />}
                                 />
                                 {/*没有IndexRoute之后想渲染默认的路由,只能把这个路由放在后面,匹配/admin */}
-                                <Route exact path= {url} render={({history}) => {
+                                <Route exact path={url} render={({history}) => {
                                     return (
                                         <div>
                                             <Button
@@ -376,10 +375,10 @@ function mapDispatchToProps(dispatch) {
         authorize: handleAuthorize,
         autoAuth: handleAutoAuth,
         logout: handleLogOut
-    }, dispatch);
+    }, dispatch)
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main))
 
 
 

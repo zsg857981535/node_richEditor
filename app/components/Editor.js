@@ -1,8 +1,7 @@
 /**
  * Created by DaGuo on 2017/4/11.
  */
-import React,{ PropTypes,Component } from 'react'
-
+import React, {PropTypes, Component} from 'react'
 
 
 export default class Editor extends Component {
@@ -14,12 +13,12 @@ export default class Editor extends Component {
     };
 
     static defaultProps = {
-        content:'',
-        uploadUmgUrl:'/upload',
-        id:'editor'
+        content: '',
+        uploadUmgUrl: '/upload',
+        id: 'editor'
     };
 
-    componentDidMount(){
+    componentDidMount() {
         let id = this.props.id;
         this.editor = new window.wangEditor(id);
         // 取消/开启粘贴过滤
@@ -60,16 +59,17 @@ export default class Editor extends Component {
         //初始化内容
         this.editor.$txt.html(this.props.content);
     }
+
     //获取内容
-    getContent=()=>{
+    getContent = () => {
         let content = this.editor.$txt.html();
         return content;
     };
 
 
-    render(){
+    render() {
         return (
-            <div id = {this.props.id} className="editor-container">
+            <div id={this.props.id} className="editor-container">
 
             </div>
         )

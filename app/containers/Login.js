@@ -4,10 +4,10 @@
 import React, {PropTypes, Component} from 'react'
 import {Form, Icon, Input, Button, Checkbox} from 'antd';
 const FormItem = Form.Item;
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { withRouter } from 'react-router-dom'
-import { user_module } from '../redux'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {withRouter} from 'react-router-dom'
+import {user_module} from '../redux'
 const {
     handleAuthorize,
     handleLogOut
@@ -24,21 +24,22 @@ class Login extends Component {
 
     static defaultProps = {
         loginStatus: '',
-        onSubmit: ()=>{}
+        onSubmit: () => {
+        }
     }
 
     state = {};
 
     handleSubmit = (e) => {
         e.preventDefault();
-        const { username,password } = this.state
+        const {username, password} = this.state
         // console.log('username,password',username,password);
-        const validate = {},help = {}
-        if(!username){
+        const validate = {}, help = {}
+        if (!username) {
             validate['username'] = 'error'
             help['username'] = 'username is required'
         }
-        if(!password){
+        if (!password) {
             validate['password'] = 'error'
             help['password'] = 'password is required'
         }
@@ -46,14 +47,14 @@ class Login extends Component {
             validate,
             help
         })
-        for(let item in validate){
-            if(validate[item] == 'error'){
+        for (let item in validate) {
+            if (validate[item] == 'error') {
                 return
             }
         }
         // const { onSubmit } = this.props
         // onSubmit && onSubmit(username,password)
-        this.handleAuthorize(username,password)
+        this.handleAuthorize(username, password)
     };
 
     //login
@@ -85,7 +86,7 @@ class Login extends Component {
     };
 
     render() {
-        const {validate = {}, help = {}, loginStatus,loading  } = this.state
+        const {validate = {}, help = {}, loginStatus, loading} = this.state
         // const { loginStatus } = this.props
         return (
             <Form onSubmit={this.handleSubmit}
@@ -100,7 +101,7 @@ class Login extends Component {
                     <Input
                         prefix={<Icon type="user" style={{fontSize: 13}}/>}
                         placeholder="Username"
-                        name = 'username'
+                        name='username'
                     />
                 </FormItem>
                 <FormItem
@@ -112,10 +113,10 @@ class Login extends Component {
                     <Input
                         prefix={<Icon type="lock" style={{fontSize: 13}}/>}
                         type="password"
-                        name = 'password'
+                        name='password'
                         placeholder="Password"
                     />
-                    <p style = {{ color :'#f04134'}}>{ loginStatus || ''}</p>
+                    <p style={{color: '#f04134'}}>{ loginStatus || ''}</p>
                 </FormItem>
                 <FormItem>
                     <Checkbox>Remember me</Checkbox>
@@ -131,7 +132,7 @@ class Login extends Component {
         );
     }
 }
-function mapStateToProps(state){
+function mapStateToProps(state) {
 
     const {isAuthorized} = state.user_state
     return {
@@ -139,10 +140,10 @@ function mapStateToProps(state){
     }
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         authorize: handleAuthorize,
         logout: handleLogOut
-    },dispatch)
+    }, dispatch)
 }
-export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Login))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login))

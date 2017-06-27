@@ -3,7 +3,7 @@
  */
 import React, {PropTypes, Component} from 'react'
 import Editor from '../components/Editor'
-import {Button, Input, Upload, Icon, Modal, Select,message} from 'antd'
+import {Button, Input, Upload, Icon, Modal, Select, message} from 'antd'
 import {HOST, ARTICLE} from '../constant'
 const Option = Select.Option
 
@@ -34,7 +34,7 @@ export default class EditArticle extends Component {
             uid: -1,
             name: 'xxx.png',
             status: 'done',
-            url:  this.props.article.art_img,
+            url: this.props.article.art_img,
             //thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
         }] : [],
         cat_id: this.props.article.cat_id || ''
@@ -62,17 +62,17 @@ export default class EditArticle extends Component {
 
     handleOnClick = () => {
         let html = this.editor.getContent(),
-            {title, imgUrl = '',cat_id} = this.state,
-            { onSubmit } = this.props
+            {title, imgUrl = '', cat_id} = this.state,
+            {onSubmit} = this.props
         // console.log('title',title,html);
 
         //imgUrl is not required
-        if(!title || !cat_id || !html){
+        if (!title || !cat_id || !html) {
             message.error('内容不完整哟')
             return
         }
         const params = {
-            art_title:title,
+            art_title: title,
             art_img: imgUrl,
             art_content: html,
             cat_id
@@ -91,10 +91,10 @@ export default class EditArticle extends Component {
 
         // console.log('value', value);
         this.setState({
-            cat_id:value
+            cat_id: value
         })
     };
-    handleBeforeUpload = file=>{
+    handleBeforeUpload = file => {
         // console.log('beforeUpload',file);
         const isIMG = /image/i.test(file.type);
         if (!isIMG) {
@@ -109,7 +109,7 @@ export default class EditArticle extends Component {
 
     render() {
         const {article, loading} = this.props;
-        const {previewVisible, previewImage, fileList,title,cat_id} = this.state;
+        const {previewVisible, previewImage, fileList, title, cat_id} = this.state;
         const uploadButton = (
             <div>
                 <Icon type="plus"/>
@@ -145,13 +145,13 @@ export default class EditArticle extends Component {
                        value={ title }
                        onChange={ this.onTitleChange }
                 />
-                <Select value = {cat_id}
+                <Select value={cat_id}
                         onChange={this.handleOnSelect}
-                        style = {{marginLeft:'30px',width:120}}
+                        style={{marginLeft: '30px', width: 120}}
                         dropdownMatchSelectWidth
                         defaultActiveFirstOption
                 >
-                    <Option value = '' key={'all'}>选择类别</Option>
+                    <Option value='' key={'all'}>选择类别</Option>
                     {
                         this.props.categories.map(({_id, cat_name}) =>
                             <Option value={_id} key={_id}>

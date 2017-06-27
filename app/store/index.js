@@ -2,14 +2,14 @@
  * Created by DaGuo on 2017/3/22.
  */
 
-import { createStore as _createStore, applyMiddleware, combineReducers } from 'redux';
+import {createStore as _createStore, applyMiddleware, combineReducers} from 'redux';
 import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
-import {article_module,category_module,user_module} from '../redux';
+import {article_module, category_module, user_module} from '../redux';
 
-const { article_state } = article_module;
-const { category_state } = category_module
-const { user_state } = user_module
+const {article_state} = article_module;
+const {category_state} = category_module
+const {user_state} = user_module
 
 const reducers = combineReducers({
     article_state,
@@ -17,9 +17,9 @@ const reducers = combineReducers({
     user_state
 });
 
-const middlewares = [ thunk ];
+const middlewares = [thunk];
 
-if(process.env.NODE_ENV == 'development'){
+if (process.env.NODE_ENV == 'development') {
     middlewares.unshift(createLogger());
 }
 const finalCreateStore = applyMiddleware(
@@ -29,8 +29,8 @@ const finalCreateStore = applyMiddleware(
 // console.log(store.getState());
 
 
-export default function (initialState){
-    const store = finalCreateStore(reducers,initialState);
+export default function (initialState) {
+    const store = finalCreateStore(reducers, initialState);
 
     //Enable Webpack hot module replacement for reducers
     // if(module.hot){

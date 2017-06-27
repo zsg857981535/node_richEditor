@@ -10,4 +10,5 @@ import ArticleList from './ArticleList'
 import Blog from './Blog'
 import Category from './Category'
 import EditArticle from './EditArticle'
-export { Login,Main,View,Article,ArticleList,Blog,Category,EditArticle}
+
+export {Login, Main, View, Article, ArticleList, Blog, Category, EditArticle}

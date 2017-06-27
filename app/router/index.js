@@ -11,12 +11,10 @@ import {
 import App from '../App';
 
 
-
-
-export default function (){
+export default function () {
     return (
         <Router>
-            <Route path = "/" component={App}/>
+            <Route path="/" component={App}/>
         </Router>
     )
 }

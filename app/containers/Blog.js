@@ -3,13 +3,12 @@
  */
 import React, {Component, PropTypes} from 'react'
 import {Pagination} from 'antd'
-import { withRouter } from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
 
 // const categories = Array.from(new Array(20)).map((item,index)=>({
 //     id:index,
 //     label:'category' + index
 // }));
-
 
 
 const CategoryList = ({categories, sum, onClickCate, selected, showMore, onReadAll}) => (
@@ -19,16 +18,16 @@ const CategoryList = ({categories, sum, onClickCate, selected, showMore, onReadA
             label={'全部'}
             count={ sum }
             className={selected == '' && 'selected'}
-            onClick={onClickCate.bind(null, '')}
+            onClick={onClickCate && onClickCate.bind(null, '')}
         />
         {
-            categories.map((item, index) =>
+            categories && categories.map((item, index) =>
                 <Category
                     key={item._id}
                     label={item.cat_name}
                     count={ item.count }
                     className={selected == item._id && 'selected'}
-                    onClick={onClickCate.bind(null, item._id)}
+                    onClick={onClickCate && onClickCate.bind(null, item._id)}
                 />
             )
         }
@@ -60,7 +59,7 @@ const ArticleRow = ({article, onClick}) => (
 const ArticleList = ({articles, onRowClick}) => (
     <div className="article-list">
         {
-            articles.map((article, index) =>
+            articles && articles.map((article, index) =>
                 <ArticleRow
                     key={article._id}
                     article={article}
@@ -72,15 +71,15 @@ const ArticleList = ({articles, onRowClick}) => (
 );
 
 // # View Blog
- class Blog extends Component {
+class Blog extends Component {
 
 
     render() {
-        const {articlesGroup, onClickCate, currentCate, articles, categories, count, currentPage,OnPageChange} = this.props
-        const category = categories.find(el => el._id == currentCate)
+        const {articlesGroup, onClickCate, currentCate, articles, categories, count, currentPage, OnPageChange} = this.props
+        const category = categories && categories.find(el => el._id == currentCate)
         const sum = () => {
-            let result = articlesGroup.reduce((v, first) => ({count: v.count + first.count}), {count: 0})
-            return result.count;
+            let result = articlesGroup && articlesGroup.reduce((v, first) => ({count: v.count + first.count}), {count: 0})
+            return result && result.count || 0;
         };
         // console.log('reduce sum',sum());这里渲染了5次?由于props不是一次性传进来的,每次接受到新的props都会重新渲染
 
