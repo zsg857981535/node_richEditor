@@ -1,6 +1,7 @@
 /**
  * Created by DaGuo on 2017/3/15.
  */
+import Es6Promise from 'es6-promise';
 import 'babel-polyfill'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -8,6 +9,7 @@ import {Provider} from 'react-redux'
 import configureStore from './store'
 import App from './App'
 import { AppContainer } from 'react-hot-loader'
+Es6Promise.polyfill();
 const store = configureStore();
 const DEV = process.env.NODE_ENV == 'development';
 // console.log('store',store.getState())

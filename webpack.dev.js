@@ -1,19 +1,22 @@
 /**
- * Created by DaGuo on 2017/3/16.
+ * Created by DaGuo on 2017/3/15.
  */
-
 var path = require('path');
 var webpack = require('webpack')
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var OpenBrowserPlugin = require('open-browser-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var autoprefixer = require('autoprefixer');
-var ChunkManifestPlugin = require("chunk-manifest-webpack-plugin");
-var WebpackChunkHash = require("webpack-chunk-hash");
 
 var config = {
 
-    entry:{
-        app:'./app/index.js',
+    entry: {
+        app: [
+            'react-hot-loader/patch',// activate HMR for React
+            'webpack-dev-server/client?http://localhost:3001',
+            'webpack/hot/only-dev-server',
+            './app/index.js'
+        ],
         vendor: [
             'react',
             'react-dom',
@@ -24,10 +27,10 @@ var config = {
     },
     output: {
         path: path.resolve(__dirname,'dist'),
-        filename: '[name].[chunkhash].js',
-        chunkFilename: "[name].[chunkhash].js",
+        filename: '[name].[hash].js',
         publicPath: '/',
     },
+    devtool: "cheap-eval-source-map",//enum
     module: {
         rules: [
             {
@@ -107,6 +110,7 @@ var config = {
             //less loader end
         ]
     },
+
     resolve: {
         modules: [
             "node_modules",
@@ -117,41 +121,46 @@ var config = {
 
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({
-            name: ["vendor", "manifest"], // vendor libs + extracted manifest
-            minChunks: Infinity
+            name:'vendor',
+            filename:'vendor.[hash].js'
         }),
-        new ExtractTextPlugin('[name].[chunkhash].css'),
+        new ExtractTextPlugin('[name].[hash].css'),
         new webpack.HashedModuleIdsPlugin(),
-        new WebpackChunkHash(),
         new webpack.LoaderOptionsPlugin({//所有loader应用的配置
             minimize: true,
-            debug: false,
+            debug: true,
         }),
         new HtmlWebpackPlugin({
             title: 'Blog | React',
             template: './index.html',
             inject: 'body'
         }),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NamedModulesPlugin(),//打印更新文件的名称
         new webpack.DefinePlugin({
             'process.env': {
-                'NODE_ENV': JSON.stringify('production')
+                'NODE_ENV': JSON.stringify('development')
             }
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false,
-                drop_console: true
-            },
-            output: {
-                comments: false
-            }
-        }),
-        new ChunkManifestPlugin({
-            filename: "chunk-manifest.json",
-            manifestVariable: "webpackManifest",
-            inlineManifest: true
-        })
+        new OpenBrowserPlugin({url: 'http://localhost:3001'})
     ],
+
+    devServer: {
+        port: 3001,
+        host: '0.0.0.0',
+        historyApiFallback: true,
+        noInfo: false,
+        publicPath: '/',
+        hot: true,
+        compress: true,
+        stats: {
+            colors: true,
+            hash: true,
+            timings: true,
+            chunks: false
+        }
+    }
+
 }
 
-module.exports = config
+module.exports = config;
