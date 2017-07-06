@@ -40,6 +40,8 @@ var Model = Article.Model;
 var queryHelper = require('../models/query_helper');
 var pageQuery = queryHelper.pageQuery;
 var mongoose = require('mongoose');
+
+//这里配置静态资源URL
 const api_url = process.env.NODE_ENV == 'production' ? 'http://119.29.199.51:3000': 'http://localhost:3000'
 
 //rename the uploaded file
