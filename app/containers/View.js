@@ -17,10 +17,8 @@ import {
     Article
 }
     from './index'
-
-
 import {Icon} from 'antd'
-import {article_module, category_module, user_module} from '../redux';
+import {article_module, category_module, user_module} from '../redux'
 
 const {
     handleReadArticles,
@@ -138,12 +136,13 @@ class View extends Component {
                     <Route path={`/article/:id`}
                            exact
                            render={({match, ...rest}) =>
-                               <Article
-                                   article={this.props.articles.find(el => el._id == match.params.id)}
-                                   {...rest}
-                                   match={match}
-                                   fetchData={getArticle}
-                               />}
+                                <Article
+                                article={this.props.articles.find(el => el._id == match.params.id)}
+                                {...rest}
+                                match={match}
+                                fetchData={getArticle}
+                            />
+                           }
                     />
                     <Route path={ url }
                            exact

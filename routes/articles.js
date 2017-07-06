@@ -154,7 +154,7 @@ router.post('/article', upload.array(), function (req, res, next) {
         if (err) {
             res.send({status: false, message: 'Create failure'});
             next(err);
-            return;
+            return
         }
         res.send({status: true, message: 'Article created'})
         //return res.redirect('/admin/articles')

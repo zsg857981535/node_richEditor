@@ -18,11 +18,11 @@ function verifyToken(req, res, next) {
                     res.send({
                         status: false,
                         message: 'Authorization failure'
-                    });
+                    })
                     return
                 } else {
                     req.decoded = decoded
-                    next();
+                    next()
                 }
             })
         } else {
@@ -30,8 +30,8 @@ function verifyToken(req, res, next) {
             res.send({
                 status: false,
                 message: 'No token provided'
-            });
-            return;
+            })
+            return
         }
     } else {
         next()

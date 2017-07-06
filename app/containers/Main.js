@@ -2,7 +2,7 @@
  * Created by DaGuo on 2017/3/15.
  */
 import React, {Component, PropTypes} from 'react';
-import {Layout, Menu, Breadcrumb, Icon, message, Modal, Button, Pagination, Select} from 'antd';
+import {Layout, Menu, Icon, message, Modal, Button, Pagination, Select} from 'antd';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {
@@ -197,8 +197,8 @@ export class Main extends Component {
         const {match :{url}} = this.props
         return (
             <Layout style={{height: '100%'}}>
-                <Header className="admin-header">
-                    <div className="logo"><Link to='/'>LOGO</Link></div>
+                <Header className="admin-header" style = {{ padding:0}}>
+                    <div className="logo"><Link to='/'>头像</Link></div>
                     {/*
                      <Menu
                      theme="dark"

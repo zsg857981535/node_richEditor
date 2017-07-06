@@ -5,6 +5,7 @@
     "stage-0"
   ],
   "plugins": [
+    "syntax-dynamic-import",
     "react-hot-loader/babel",
     "transform-class-properties",
     [
@@ -13,6 +14,10 @@
         "libraryName": "antd",
         "style": true
       }
-    ]
+    ],
+    ["import-inspector", {
+      "serverSideRequirePath": true,
+      "webpackRequireWeakId": true
+    }]
   ]
 }

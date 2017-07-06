@@ -7,13 +7,11 @@ import ReactDOM from 'react-dom'
 import {Provider} from 'react-redux'
 import configureStore from './store'
 import App from './App'
-// import ReactHotLoader from './components/ReactHotLoader'
 import { AppContainer } from 'react-hot-loader'
-
 const store = configureStore();
 const DEV = process.env.NODE_ENV == 'development';
 // console.log('store',store.getState())
-require('./theme.less')
+// require('./theme.less')
 require('./App.scss')
 require('../lib/wangEditor/js/wangEditor.min')
 require('../lib/wangEditor/css/wangEditor.css')
