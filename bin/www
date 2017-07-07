@@ -9,11 +9,15 @@ var debug = require('debug')('node-rich-editor:server');
 var http = require('http');
 var connectDB = require('../db');
 
+var cfg = require('../config')
+
+var _port = process.env.NODE_ENV == 'production' ? cfg.BACKEND_PORT_PROD : cfg.BACKEND_PORT_DEV
+
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || _port);
 app.set('port', port);
 
 /**

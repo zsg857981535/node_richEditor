@@ -7,6 +7,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var OpenBrowserPlugin = require('open-browser-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var autoprefixer = require('autoprefixer');
+var cfg = require('./config')
 
 var config = {
 
@@ -146,7 +147,7 @@ var config = {
     ],
 
     devServer: {
-        port: 3001,
+        port: cfg.FRONTEND_PORT_DEV,
         host: '0.0.0.0',
         historyApiFallback: true,
         noInfo: false,

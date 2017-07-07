@@ -77,6 +77,8 @@ class Article extends Component {
                     visible={this.state.visible}
                     footer = {null}
                     onCancel={()=>this.handleVisible(false)}
+                    style = {{textAlign:'center'}}
+                    width = {'80%'}
                 >
                     {this.state.preview && <img src = {this.state.preview}/>}
                 </Modal>

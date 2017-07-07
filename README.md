@@ -28,13 +28,15 @@
 > 
 
 ```
+本地开发：
+
 git clone
 
 npm install
 
 确保启动mongodb服务
 
-npm start 启动后端服务,默认是3000端口
+npm run start:server_dev 启动后端服务,默认是3000端口
 
 npm run start:app 启动开发服务器,默认是3001端口
 
@@ -44,13 +46,23 @@ npm run start:app 启动开发服务器,默认是3001端口
 
 
 ```
-打包部署
+部署:
+
+git clone 将项目拷贝到服务器某个目录
+
+npm install 
+
+确保启动mongodb服务
+
+npm run start:server_prod 启动后端服务器,默认是3000端口
 
 npm run build  根目录下的dist目录就是前端静态文件的生成目录
 
-之后可以将文件拷贝到你的服务器上,配置好nginx web服务器之后就可以访问了
+将文件拷贝到服务器的某个目录下,配置好nginx web服务器之后就可以访问了
 
 ```
+> 端口和服务器的地址可以在根目录下的config.js文件中配置
+
 
 ## 线上地址
 

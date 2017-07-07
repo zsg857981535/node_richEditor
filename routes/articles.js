@@ -40,9 +40,10 @@ var Model = Article.Model;
 var queryHelper = require('../models/query_helper');
 var pageQuery = queryHelper.pageQuery;
 var mongoose = require('mongoose');
+var cfg = require('../config')
 
 //这里配置静态资源URL
-const api_url = process.env.NODE_ENV == 'production' ? 'http://119.29.199.51:3000': 'http://localhost:3000'
+const api_url = process.env.NODE_ENV == 'production' ? `${cfg.BACKEND_HOST_PROD}:${cfg.BACKEND_PORT_PROD}`: `http://localhost:${cfg.BACKEND_PORT_DEV}`
 
 //rename the uploaded file
 var storage = multer.diskStorage({

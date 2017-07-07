@@ -1,8 +1,9 @@
 /**
  * Created by DaGuo on 2017/3/22.
  */
+var cfg = require('../../config')
 
-export const HOST = process.env.NODE_ENV == 'production' ? 'http://119.29.199.51:3000/api' : 'http://localhost:3000/api'
+export const HOST = process.env.NODE_ENV == 'production' ? `${cfg.BACKEND_HOST_PROD}:${cfg.BACKEND_PORT_PROD}/api` : `http://localhost:${cfg.BACKEND_PORT_DEV}/api`
 
 
 export const ARTICLE = {
